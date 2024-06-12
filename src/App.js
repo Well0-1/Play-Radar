@@ -1,18 +1,19 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Main from "./components/Main";
 import Aside from "./components/Aside";
+import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="w-screen h-screen relative bg-[#282c34]">
+    <div className="w-screen relative bg-[#282c34]">
       <Navbar />
-      <Aside />
-      <div className="w-screen"></div>
-
+      <div className="flex">
+        <Main />
+        <Aside />
+      </div>
       <Footer />
     </div>
   );
 }
-
 export default App;

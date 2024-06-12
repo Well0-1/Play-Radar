@@ -1,23 +1,29 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 export default function Footer() {
   return (
     <div className="flex border-t justify-center px-20 py-6 w-full z-10 bg-red-900">
       <div className="flex flex-col w-full justify-between">
         <div className="max-lg:flex flex-col max-lg:items-center grid grid-cols-12 lg:space-y-0 space-y-8">
-          <div className="col-span-2 lg:col-span-6 relative">
-            <a href="/" className="text-4xl align-middle">
+          <div className="max-lg:text-center max-lg:w-screen lg:col-span-6 relative">
+            <a href="/" className="text-4xl">
               Can You Run It
             </a>
-            <div className="flex flex-row max-lg:justify-center">
-              <a href="https://www.github.com/Well0-1" className="p-6 pl-0 z-50 ">
-                <FontAwesomeIcon icon="faGithub" />
-                {/* Fontawesome Çözülecek main Part tamamlanacak! */}
+            <div className="flex flex-row max-lg:justify-center space-x-4 pt-2">
+              <a
+                href="https://www.github.com/Well0-1"
+                className="p-2 hover:bg-slate-700 rounded-lg"
+              >
+                <FontAwesomeIcon icon={faGithub} size="xl" />
               </a>
-              <a className="p-6 z-50 " href="https://www.linkedin.com">
-                <FontAwesomeIcon icon="faLinkedin" />
+              <a href="https://www.linkedin.com" className="p-2 hover:bg-slate-700 rounded-lg ">
+                <FontAwesomeIcon icon={faLinkedin} size="xl" />
+              </a>
+              <a href="mailto:sakyuzogluh@gmail.com" className="p-2 hover:bg-slate-700 rounded-lg">
+                <FontAwesomeIcon icon={faEnvelope} size="xl" />
               </a>
             </div>
           </div>
