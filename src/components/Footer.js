@@ -7,12 +7,12 @@ export default function Footer() {
   return (
     <div className="flex border-t justify-center px-20 py-6 w-full z-10 bg-red-900">
       <div className="flex flex-col w-full justify-between">
-        <div className="max-lg:flex flex-col max-lg:items-center grid grid-cols-12 lg:space-y-0 space-y-8">
+        <div className="max-lg:flex flex-col max-lg:items-center grid grid-cols-12 lg:space-y-0 space-y-6">
           <div className="max-lg:text-center max-lg:w-screen lg:col-span-6 relative">
-            <a href="/" className="text-4xl">
+            <a href="/" className="text-4xl font-bold">
               Can You Run It
             </a>
-            <div className="flex flex-row max-lg:justify-center space-x-4 pt-2">
+            <div className="flex flex-row max-lg:justify-center space-x-6 pt-2">
               <a
                 href="https://www.github.com/Well0-1"
                 className="p-2 hover:bg-slate-700 rounded-lg"
@@ -29,19 +29,19 @@ export default function Footer() {
           </div>
           <div className="max-lg:space-x-20 flex justify-between col-span-5">
             <div className="col-span-2 flex flex-col">
-              <h1 className="text-2xl">Topic</h1>
+              <h1 className="text-2xl font-bold">Topic</h1>
               <div>
                 <h1>subtitle</h1>
               </div>
             </div>
             <div className="col-span-2 flex flex-col">
-              <h1 className="text-2xl">Topic</h1>
+              <h1 className="text-2xl font-bold">Topic</h1>
               <div>
                 <h1>subtitle</h1>
               </div>
             </div>
             <div className="col-span-1 flex flex-col">
-              <h1 className="text-2xl">Topic</h1>
+              <h1 className="text-2xl font-bold">Topic</h1>
               <div>
                 <h1>subtitle</h1>
               </div>

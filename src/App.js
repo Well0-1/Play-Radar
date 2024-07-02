@@ -1,17 +1,22 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Main from "./components/Main";
-import Aside from "./components/Aside";
 import Footer from "./components/Footer";
+import SearchBar from "./components/SearchBar";
+import Main from "./components/landing/Main";
+import HowItWorks from "./components/landing/howItWorks";
 
 function App() {
   return (
     <div className="w-screen relative bg-[#282c34]">
       <Navbar />
-      <div className="flex">
-        <Main />
-        <Aside />
-      </div>
+      {/* <SearchBar /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="howitworks" element={<HowItWorks />} />
+        </Routes>
+      </BrowserRouter>
       <Footer />
     </div>
   );
