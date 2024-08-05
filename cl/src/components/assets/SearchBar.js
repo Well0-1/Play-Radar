@@ -4,7 +4,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function SearchBar() {
   return (
-    <div className="w-full flex lg:justify-between">
+    <div className="w-full flex lg:justify-between p-1">
       <div className="flex items-center justify-center max-lg:hidden pl-5">
         <strong>Popular Games</strong>
       </div>

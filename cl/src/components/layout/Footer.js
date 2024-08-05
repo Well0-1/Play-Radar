@@ -4,6 +4,8 @@ import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 export default function Footer() {
+  const email = "sakyuzogluh";
+  const domain = "gmail.com";
   return (
     <div className="flex border-t justify-center px-20 py-6 w-full z-10 bg-red-900">
       <div className="flex flex-col w-full justify-between">
@@ -15,14 +17,20 @@ export default function Footer() {
             <div className="flex flex-row max-lg:justify-center space-x-6 pt-2">
               <a
                 href="https://www.github.com/Well0-1"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 hover:bg-slate-700 rounded-lg"
               >
                 <FontAwesomeIcon icon={faGithub} size="xl" />
               </a>
-              <a href="https://www.linkedin.com" className="p-2 hover:bg-slate-700 rounded-lg ">
+              <a
+                href="https://www.linkedin.com"
+                rel="noopener noreferrer"
+                className="p-2 hover:bg-slate-700 rounded-lg "
+              >
                 <FontAwesomeIcon icon={faLinkedin} size="xl" />
               </a>
-              <a href="mailto:sakyuzogluh@gmail.com" className="p-2 hover:bg-slate-700 rounded-lg">
+              <a href={`mailto:${email}@${domain}`} className="p-2 hover:bg-slate-700 rounded-lg">
                 <FontAwesomeIcon icon={faEnvelope} size="xl" />
               </a>
             </div>

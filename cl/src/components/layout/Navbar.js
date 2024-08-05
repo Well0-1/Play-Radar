@@ -15,7 +15,12 @@ export default function Navbar() {
           <a href="/howitworks" className="font-semibold">
             How It Works?
           </a>
-          <a href="https://www.github.com/Well0-1" className="hover:bg-slate-600 p-2 rounded-lg">
+          <a
+            href="https://www.github.com/Well0-1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:bg-slate-600 p-2 rounded-lg"
+          >
             <FontAwesomeIcon icon={faGithub} size="2xl" />
           </a>
         </div>
