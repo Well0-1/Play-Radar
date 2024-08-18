@@ -9,7 +9,7 @@ import BatchWriteExample from "./bachwrite";
 
 function App() {
   return (
-    <div className="w-screen relative bg-[#282c34]">
+    <div className="w-screen relative bg-slate-900">
       <Router>
         <Navbar />
         <Routes>

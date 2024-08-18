@@ -4,24 +4,30 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 export default function Navbar() {
   return (
-    <div className="flex items-center justify-center w-screen bg-orange-600 lg:p-8 p-4 z-10">
-      <div className="flex justify-between w-full lg:w-[1024px]">
-        <div className="p-2 flex items-center">
-          <a href="/" className="text-2xl font-bold tracking-wide">
-            canYouRunIt
+    <div className="flex items-center justify-center w-screen bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 lg:p-8 p-4 z-10 shadow-lg">
+      <div className="flex justify-between w-full lg:w-[1024px] max-w-screen-xl mx-auto">
+        <div className="flex items-center">
+          <a
+            href="/"
+            className="text-3xl font-extrabold tracking-wide text-white hover:text-slate-400 transition-colors duration-300"
+          >
+            Play-Radar
           </a>
         </div>
-        <div className="p-2 space-x-2 lg:space-x-6 text-sm flex items-center text-center">
-          <a href="/howitworks" className="font-semibold">
+        <div className="flex items-center space-x-4 lg:space-x-8 text-sm lg:text-base">
+          <a
+            href="/howitworks"
+            className="text-white font-semibold hover:text-slate-400 transition-all duration-300"
+          >
             How It Works?
           </a>
           <a
             href="https://www.github.com/Well0-1"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:bg-slate-600 p-2 rounded-lg"
+            className="text-white p-2 hover:text-slate-400 transition-colors duration-200"
           >
-            <FontAwesomeIcon icon={faGithub} size="2xl" />
+            <FontAwesomeIcon icon={faGithub} size="xl" />
           </a>
         </div>
       </div>

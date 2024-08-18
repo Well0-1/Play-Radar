@@ -73,20 +73,37 @@ export default function Games() {
   const os = sysInfo.userOs;
   const bit = sysInfo.bit;
 
-  //later days
+  console.log(cpu);
+  console.log(ram);
+  console.log(os);
+  console.log(bit);
   console.log(isMobile);
   console.log(gpuTier);
   console.log(benchmark);
 
   return (
-    <div className="w-full h-full relative flex flex-col lg:p-[2%]">
-      <h1 className="text-white text-4xl">GPU: {gpuModel ? gpuModel : "Loading..."}</h1>
-      <h1 className="text-white text-4xl">CPU: {cpu || "Loading..."}</h1>
-      <h1 className="text-white text-4xl">RAM: {ram ? `${ram} GB` : "Loading..."}</h1>
-      <h1 className="text-white text-4xl">{bit ? `${bit} based ${os}` : "Loading..."}</h1>
-      <button className="border-2 w-fit" onClick={sendSysInfo}>
-        I DON'T CARE ABOUT PRIVACY I'M NOT THAT IMPORTANT
-      </button>
+    // h-screen DONT FORGET NOOOOOOOOOOOOOOOOOOOOOOOOOooo
+    <div className="w-full h-screen relative flex flex-col lg:p-4 text-white font-cairo">
+      <main className="flex max-lg:flex-col justify-around p-4 lg:space-x-4 max-lg:space-y-4 font-cairo">
+        <section className="lg:w-1/2 flex flex-col bg-slate-700 p-6 rounded-lg shadow-lg border border-slate-600 hover:bg-slate-600 transition duration-300">
+          <h2 className="text-3xl font-bold pb-4 text-white">Minimum System Requirements</h2>
+          <ul className="list-disc pl-6 space-y-2 text-gray-300 font-inter">
+            <li>Operating System:</li>
+            <li>Processor:</li>
+            <li>Memory:</li>
+            <li>Graphics:</li>
+          </ul>
+        </section>
+        <section className="lg:w-1/2 flex flex-col bg-slate-700 p-6 rounded-lg shadow-lg border border-slate-600 hover:bg-slate-600 transition duration-300">
+          <h2 className="text-3xl font-bold pb-4 text-white">Recommended System Requirements</h2>
+          <ul className="list-disc pl-6 space-y-2 text-gray-300 font-inter">
+            <li>Operating System:</li>
+            <li>Processor:</li>
+            <li>Memory:</li>
+            <li>Graphics:</li>
+          </ul>
+        </section>
+      </main>
     </div>
   );
 }
