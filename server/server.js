@@ -25,12 +25,22 @@ async function diskSpace() {
   }
 }
 
+(async () => {
+  try {
+    const osNameModule = await import("os-name");
+    osName = osNameModule.default;
+  } catch (error) {
+    console.error("Error importing os-name module: ", error);
+  }
+})();
+
 app.get("/api", async (req, res) => {
   try {
-    const userOs = os.platform();
+    const userOs = await osName();
     const bit = os.arch();
     const cpuModels = os.cpus().map((cpu) => cpu.model);
-    const cpuModel = cpuModels.length > 0 ? cpuModels[0] : "No information available";
+    const cpuModel =
+      cpuModels.length > 0 ? cpuModels[0] : "No information available";
     const ramByte = os.totalmem();
     const ramGB = Math.ceil(ramByte / (1024 * 1024 * 1024));
     const freeSpace = await diskSpace();
