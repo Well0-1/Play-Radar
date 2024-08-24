@@ -102,7 +102,6 @@ export default function Games() {
       setBit(data.bit);
       setFreeSpace(data.freeSpace);
       setLoading(false);
-      setTimeoutStat(true);
     } catch (err) {
       setTimeout(() => {
         setLoading(false);
