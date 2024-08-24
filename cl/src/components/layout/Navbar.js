@@ -9,7 +9,7 @@ export default function Navbar() {
         <div className="flex items-center">
           <a
             href="/"
-            className="text-3xl font-extrabold tracking-wide text-white hover:text-slate-400 transition-colors duration-300"
+            className="text-3xl font-extrabold tracking-wide text-white font-cairo hover:text-slate-400 transition-colors duration-300"
           >
             Play-Radar
           </a>

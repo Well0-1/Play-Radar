@@ -25,8 +25,24 @@ async function diskSpace() {
   }
 }
 
+async function gpuData() {
+  try {
+    const gpus = await si.graphics();
+    if (gpus && gpus.controllers.length > 0) {
+      return gpus.controllers[0].model;
+    }
+    return "No GPU found";
+  } catch (err) {
+    console.error("An Error has occurred", err);
+    return "Error retrieving GPU data";
+  }
+}
+
 (async () => {
   try {
+    await gpuData();
+    await diskSpace();
+
     const osNameModule = await import("os-name");
     osName = osNameModule.default;
   } catch (error) {
@@ -39,14 +55,15 @@ app.get("/api", async (req, res) => {
     const userOs = await osName();
     const bit = os.arch();
     const cpuModels = os.cpus().map((cpu) => cpu.model);
-    const cpuModel =
-      cpuModels.length > 0 ? cpuModels[0] : "No information available";
+    const cpuModel = cpuModels.length > 0 ? cpuModels[0] : "No information available";
+    const gpuModel = await gpuData();
     const ramByte = os.totalmem();
     const ramGB = Math.ceil(ramByte / (1024 * 1024 * 1024));
     const freeSpace = await diskSpace();
 
     res.json({
       cpuModel,
+      gpuModel,
       ramGB,
       userOs,
       bit,

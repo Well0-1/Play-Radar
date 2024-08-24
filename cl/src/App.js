@@ -5,7 +5,7 @@ import Footer from "./components/layout/Footer";
 import Main from "./components/layout/Main";
 import HowItWorks from "./components/landing/HowItWorks";
 import Games from "./components/landing/Games";
-import BatchWriteExample from "./bachwrite";
+// import BatchWriteExample from "./bachwrite";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/games" element={<Games />} />
           <Route path="/howitworks" element={<HowItWorks />} />
-          <Route path="/bachwrite" element={<BatchWriteExample />} />
+          {/* <Route path="/bachwrite" element={<BatchWriteExample />} /> */}
         </Routes>
         <Footer />
       </Router>

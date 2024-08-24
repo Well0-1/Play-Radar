@@ -15,8 +15,7 @@ export default function HowItWorks() {
       <header className="w-full text-center py-8">
         <h1 className="text-3xl font-bold text-white">How it Works</h1>
         <p className="mt-4 text-lg text-gray-300">
-          This page explains how our system collects and processes your system
-          information.
+          Learn how our system gathers and processes your computer's information.
         </p>
       </header>
 
@@ -25,19 +24,24 @@ export default function HowItWorks() {
         <div className="lg:w-1/2 pr-0 lg:pr-4">
           <h2 className="text-2xl font-bold text-white">
             <FontAwesomeIcon icon={faLaptopCode} className="mr-2" />
-            System Information Gathering
+            Gathering System Information
           </h2>
           <p className="mt-4 text-gray-300">
-            We gather system information such as your GPU, CPU, RAM, and more
-            using specific modules.
+            We collect information about your computer's components, such as your GPU, CPU, and RAM,
+            to assess its capabilities.
           </p>
         </div>
-        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start">
-          <pre className="text-gray-400 whitespace-pre-wrap">
-            {`const fetchGPUData = async () => {
-  const gpu = await getGPUTier();
-  // Process GPU data here...
-};`}
+        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-star font-mono">
+          <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
+            {`// This is how we gather your system information
+app.get("/api", async (req, res) => {
+  try {
+    const cpuModel = cpuModels[0];
+    const gpuModel = await gpuData();
+
+    res.json{
+    ...
+`}
           </pre>
         </div>
       </section>
@@ -47,17 +51,19 @@ export default function HowItWorks() {
         <div className="lg:w-1/2 pr-0 lg:pr-4">
           <h2 className="text-2xl font-bold text-white">
             <FontAwesomeIcon icon={faCog} className="mr-2" />
-            Data Processing and Display
+            Processing and Displaying Data
           </h2>
           <p className="mt-4 text-gray-300">
-            Once the data is collected, we process and display it dynamically on
-            the interface.
+            After gathering your system's data, we analyze it to determine how well your hardware
+            can run specific games.
           </p>
         </div>
-        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start">
-          <pre className="text-gray-400 whitespace-pre-wrap">
-            {`const [gpuModel, setGpuModel] = useState("");
-const [benchmark, setBenchmark] = useState(0);`}
+        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
+          <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
+            {`// We store the GPU model, benchmark score, and other details here for later use 
+const [cpuModel, setCpuModel] = useState(""); // Cpu model name
+const [gpuModel, setGpuModel] = useState(""); // GPU model name
+...`}
           </pre>
         </div>
       </section>
@@ -70,15 +76,16 @@ const [benchmark, setBenchmark] = useState(0);`}
             Server and API
           </h2>
           <p className="mt-4 text-gray-300">
-            Our backend server is powered by Express, providing endpoints to
-            fetch and process system information.
+            Our backend uses Express to manage system information and provides APIs for data
+            processing.
           </p>
         </div>
-        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start">
-          <pre className="text-gray-400 whitespace-pre-wrap">
-            {`app.post("/system-info", (req, res) => {
-  const sysInfo = req.body;
-  res.status(200).json({ message: "System info received" });
+        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
+          <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
+            {`// API endpoint to receive system information
+app.post("/system-info", (req, res) => {
+  const sysInfo = req.body; // Gathers the information sent by the user
+  res.status(200).json({ message: "System info received successfully" });
 });`}
           </pre>
         </div>
@@ -92,11 +99,10 @@ const [benchmark, setBenchmark] = useState(0);`}
         </h2>
         <ul className="mt-4 space-y-4 text-gray-300 list-disc pl-6">
           <li>
-            <strong>Feature 1:</strong> Benchmark comparisons based on your CPU
-            model.
+            <strong>Benchmark Comparisons:</strong> We compare your CPU's performance to other CPUs.
           </li>
           <li>
-            <strong>Feature 2:</strong> Real-time GPU tier assessment.
+            <strong>GPU Tier Assessment:</strong> Get a real-time evaluation of your GPU's tier.
           </li>
         </ul>
       </section>
@@ -105,8 +111,8 @@ const [benchmark, setBenchmark] = useState(0);`}
       <section className="py-8 text-center">
         <h2 className="text-2xl font-bold text-white">Conclusion</h2>
         <p className="mt-4 text-gray-300">
-          Our system provides a seamless way to assess your hardware and plan
-          future improvements.
+          Our platform provides a comprehensive overview of how well your system can run various
+          games.
         </p>
       </section>
 
@@ -117,14 +123,14 @@ const [benchmark, setBenchmark] = useState(0);`}
           Frequently Asked Questions
         </h2>
         <div className="w-full flex justify-center">
-          <div className="space-y-10 w-9/12 lg:w-full flex flex-col">
+          <div className="space-y-10 w-9/12 lg:w-full flex flex-col bg-gray-900 hover:bg-slate-800 p-4 rounded-lg duration-300">
             <div className="mt-4 text-gray-300 space-y-4">
               <p>
                 <strong>Q:</strong> How does the system collect my information?
               </p>
               <p>
-                <strong>A:</strong> We use secure modules to gather and process
-                your system data without compromising privacy.
+                <strong>A:</strong> We securely gather and process your system data using
+                industry-standard methods.
               </p>
             </div>
             <div className="mt-4 text-gray-300 space-y-4">
@@ -132,7 +138,7 @@ const [benchmark, setBenchmark] = useState(0);`}
                 <strong>Q:</strong> Can I see the source code?
               </p>
               <p>
-                <strong>A:</strong> Of course you can! Check it out on{" "}
+                <strong>A:</strong> Absolutely! You can view it on{" "}
                 <a
                   href="https://github.com/Well0-1/Play-Radar"
                   target="_blank"
@@ -141,6 +147,7 @@ const [benchmark, setBenchmark] = useState(0);`}
                 >
                   GitHub
                 </a>
+                .
               </p>
             </div>
           </div>

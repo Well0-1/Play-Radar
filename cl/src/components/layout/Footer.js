@@ -9,11 +9,11 @@ export default function Footer() {
   return (
     <div className="flex border-t justify-center p-8 w-full z-10 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
       <div className="flex flex-col w-full justify-between">
-        <div className="grid grid-cols-12 lg:space-y-0 space-y-10 max-lg:flex max-lg:flex-col max-lg:items-center">
+        <div className="grid grid-cols-12 lg:space-y-0 space-y-8 max-lg:flex max-lg:flex-col max-lg:items-center">
           <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
             <a
               href="/"
-              className="text-4xl max-lg:pb-2 font-extrabold text-white hover:text-slate-400 transition-colors duration-300"
+              className="text-4xl max-lg:pb-2 font-extrabold text-white font-cairo hover:text-slate-400 transition-colors duration-300"
             >
               Play-Radar
             </a>
@@ -41,31 +41,49 @@ export default function Footer() {
               </a>
             </div>
           </div>
-          <div className="w-full lg:col-span-6 flex flex-row justify-around max-lg:space-x-20 text-white">
+          <div className="w-full lg:col-span-6 flex flex-row justify-between max-lg:space-x-12 text-white">
             <div className="flex flex-col space-y-2">
-              <h1 className="text-xl font-semibold text-slate-300">Topic 1</h1>
-              <a href="#" className="hover:text-slate-400 transition-colors duration-200">
+              <h1 className="text-xl font-semibold text-slate-300">Topic</h1>
+              <a
+                href="https://www.github.com/Well0-1"
+                className="hover:text-slate-400 transition-colors duration-200"
+              >
                 Subtitle 1
               </a>
-              <a href="#" className="hover:text-slate-400 transition-colors duration-200">
+              <a
+                href="https://www.github.com/Well0-1"
+                className="hover:text-slate-400 transition-colors duration-200"
+              >
                 Subtitle 2
               </a>
             </div>
             <div className="flex flex-col space-y-2">
-              <h1 className="text-xl font-semibold text-slate-300">Topic 2</h1>
-              <a href="#" className="hover:text-slate-400 transition-colors duration-200">
+              <h1 className="text-xl font-semibold text-slate-300">Topic</h1>
+              <a
+                href="https://www.github.com/Well0-1"
+                className="hover:text-slate-400 transition-colors duration-200"
+              >
                 Subtitle 1
               </a>
-              <a href="#" className="hover:text-slate-400 transition-colors duration-200">
+              <a
+                href="https://www.github.com/Well0-1"
+                className="hover:text-slate-400 transition-colors duration-200"
+              >
                 Subtitle 2
               </a>
             </div>
             <div className="flex flex-col space-y-2">
-              <h1 className="text-xl font-semibold text-slate-300">Topic 3</h1>
-              <a href="#" className="hover:text-slate-400 transition-colors duration-200">
+              <h1 className="text-xl font-semibold text-slate-300">Topic</h1>
+              <a
+                href="https://www.github.com/Well0-1"
+                className="hover:text-slate-400 transition-colors duration-200"
+              >
                 Subtitle 1
               </a>
-              <a href="#" className="hover:text-slate-400 transition-colors duration-200">
+              <a
+                href="https://www.github.com/Well0-1"
+                className="hover:text-slate-400 transition-colors duration-200"
+              >
                 Subtitle 2
               </a>
             </div>

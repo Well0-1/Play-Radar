@@ -8,16 +8,19 @@ export const normalizeModelName = (model) => {
         ""
       )
       .replace(/\(R\)|\(TM\)/g, "")
+      .replace(/Graphics/g, "")
       .trim()
       .replace(/\s+/g, " ");
   } else if (model.includes("AMD")) {
     return model
       .replace(/\(R\)|\(TM\)/g, "")
+      .replace(/Graphics/g, "")
       .trim()
       .replace(/\s+/g, " ");
   } else {
     return model
       .replace(/\(R\)|\(TM\)/g, "")
+      .replace(/Graphics/g, "")
       .trim()
       .replace(/\s+/g, " ");
   }
