@@ -145,6 +145,22 @@ export default function CustomGame() {
     }
   };
 
+  const sendSysInfo = async () => {
+    try {
+      await axios.post("/system-info", {
+        cpu: cpuModel,
+        gpu: gpuModel,
+        ram: ram,
+        os: os,
+        bit: bit,
+      });
+      alert("Successfully Deployed");
+      popupClose();
+    } catch (err) {
+      console.log("Sorry Something Went Wrong");
+    }
+  };
+
   const popupClose = () => {
     setLoading(loading ? setLoading(false) : setTimeoutStat(false));
   };
@@ -592,7 +608,12 @@ export default function CustomGame() {
           </div>
         </div>
       </div>
-      <LoadingPopup visible={loading} timeout={timeoutStat} onClose={popupClose} />
+      <LoadingPopup
+        visible={loading}
+        timeout={timeoutStat}
+        onClose={popupClose}
+        onError={sendSysInfo}
+      />
     </div>
   );
 }
