@@ -76,6 +76,13 @@ export default function Main() {
           companyName={"Rockstar Games"}
           gameName={"Grand Theft Auto VI"}
           date={"2025"}
+        />{" "}
+        <GameCard
+          href={"/CustomGame"}
+          imgSrc={"https://images2.alphacoders.com/436/436580.jpg"}
+          companyName={"You Couldnt find the game you looking for ? "}
+          gameName={"No Problem! Click Here"}
+          date={"Custom"}
         />
       </div>
     </div>
