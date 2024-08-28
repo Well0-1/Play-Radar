@@ -45,7 +45,6 @@ app.get("/api", async (req, res) => {
     const gpuModel = await gpuData();
     const ramByte = os.totalmem();
     const ramGB = Math.ceil(ramByte / (1024 * 1024 * 1024));
-    const freeSpace = await diskSpace();
 
     res.json({
       cpuModel,
@@ -53,7 +52,6 @@ app.get("/api", async (req, res) => {
       ramGB,
       userOs,
       bit,
-      freeSpace,
     });
   } catch (err) {
     res.status(500).json({ error: "Failed to retrieve system info" });

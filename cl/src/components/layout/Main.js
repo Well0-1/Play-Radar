@@ -1,4 +1,4 @@
-import SearchBar from "../assets/SearchBar";
+import SearchBar from "../utils/SearchBar";
 
 export default function Main() {
   const GameCard = ({ href, imgSrc, companyName, gameName, date }) => (

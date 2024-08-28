@@ -9,7 +9,7 @@ export const validateSystem = (cpu, gpu, ram, os, bit, minCpu, minGpu, minRam, m
   const minGpuScore = getBenchmarkScore(minGpu, gpuData);
   let issues = [];
 
-  const WINDOWS_VERSIONS = {
+  const OS_VERSIONS = {
     "Windows XP": 5,
     "Windows Vista": 6,
     "Windows 7": 7,
@@ -23,34 +23,32 @@ export const validateSystem = (cpu, gpu, ram, os, bit, minCpu, minGpu, minRam, m
     return issues;
   }
 
-  if (!WINDOWS_VERSIONS[os] || !WINDOWS_VERSIONS[minOs]) {
+  if ((!OS_VERSIONS[os] || !OS_VERSIONS[minOs]) && !os.includes("Linux")) {
     issues.push("Invalid operating system version provided.");
     return issues;
   }
 
   if (userCpuScore < minCpuScore) {
-    issues.push("Does not meet the minimum requirements. Consider upgrading your CPU");
+    issues.push("CPU does not meet the minimum requirements. Consider upgrading your CPU");
   }
 
   if (userGpuScore < minGpuScore) {
-    issues.push("Does not meet the minimum requirements. Consider upgrading your GPU");
+    issues.push("GPU does not meet the minimum requirements. Consider upgrading your GPU");
   }
 
   if (parseInt(ram) < parseInt(minRam)) {
-    issues.push(
-      `You have ${ram}GB RAM. Minimum required is ${minRam}GB. Consider adding more RAM.`
-    );
+    issues.push(`You have ${ram}GB RAM. Minimum required is ${minRam}GB. Consider adding more RAM`);
   }
 
   if (parseInt(bit) < parseInt(minBit)) {
     issues.push(
-      `You are using a ${bit}-bit system. A ${minBit}-bit system is required. Consider upgrading your OS or hardware.`
+      `You are using a ${bit}-bit system. A ${minBit}-bit system is required. Consider upgrading your OS or hardware`
     );
   }
 
-  if (WINDOWS_VERSIONS[os] < WINDOWS_VERSIONS[minOs]) {
+  if (OS_VERSIONS[os] < OS_VERSIONS[minOs]) {
     issues.push(
-      `You are using ${os}. Minimum required version is ${minOs}. Consider upgrading your OS.`
+      `You are using ${os}. Minimum required version is ${minOs}. Consider upgrading your OS`
     );
   }
 

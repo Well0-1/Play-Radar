@@ -1,12 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLaptopCode,
-  faCog,
-  faServer,
-  faRocket,
-  faQuestionCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faLaptopCode, faCog, faServer, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function HowItWorks() {
   return (
@@ -35,12 +29,13 @@ export default function HowItWorks() {
           <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
             {`// This is how we gather your system information
 app.get("/api", async (req, res) => {
-  try {
+  try ({
     const cpuModel = cpuModels[0];
     const gpuModel = await gpuData();
-
-    res.json{
     ...
+    res.json({
+    //Send JSON data to the client
+});
 `}
           </pre>
         </div>
@@ -60,9 +55,10 @@ app.get("/api", async (req, res) => {
         </div>
         <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
           <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
-            {`// We store the GPU model, benchmark score, and other details here for later use 
+            {`// We store the CPU model, and other details here for later use 
 const [cpuModel, setCpuModel] = useState(""); // Cpu model name
 const [gpuModel, setGpuModel] = useState(""); // GPU model name
+const userCpuScore = getBenchmarkScore(cpuModel, cpuData);
 ...`}
           </pre>
         </div>
@@ -89,22 +85,6 @@ app.post("/system-info", (req, res) => {
 });`}
           </pre>
         </div>
-      </section>
-
-      {/* Section: Advanced User Features */}
-      <section className="py-8 flex flex-col items-center lg:items-start">
-        <h2 className="text-2xl font-bold text-white">
-          <FontAwesomeIcon icon={faRocket} className="mr-2" />
-          Advanced User Features
-        </h2>
-        <ul className="mt-4 space-y-4 text-gray-300 list-disc pl-6">
-          <li>
-            <strong>Benchmark Comparisons:</strong> We compare your CPU's performance to other CPUs.
-          </li>
-          <li>
-            <strong>GPU Tier Assessment:</strong> Get a real-time evaluation of your GPU's tier.
-          </li>
-        </ul>
       </section>
 
       {/* Section: Conclusion */}

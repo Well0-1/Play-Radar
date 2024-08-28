@@ -30,13 +30,14 @@ export default function Games() {
   const [suggestionIndex, setSuggestionIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
   const [timeoutStat, setTimeoutStat] = useState(false);
-  const [visible, setVisible] = useState(true);
+  const [issues, setIssues] = useState([]);
+  const [conclusionStat, setConclusionStat] = useState(null);
+  const [visible, setVisible] = useState(false);
+
   const cpuInputRef = useRef(null);
   const gpuInputRef = useRef(null);
   const cpuSuggestionsRef = useRef(null);
   const gpuSuggestionsRef = useRef(null);
-  const [issues, setIssues] = useState([]);
-  const [conclusionStat, setConclusionStat] = useState(null);
 
   const handleInputChange = (e, setState, setSuggestions, data) => {
     const { value } = e.target;
@@ -95,7 +96,6 @@ export default function Games() {
       setOs(data.userOs);
       setLoading(false);
       setBit(data.bit === "x64" || data.bit === "amd64" || data.bit === "x86_64" ? 64 : 32);
-      checkSystem();
     } catch (err) {
       setTimeout(() => {
         setLoading(false);
@@ -131,10 +131,11 @@ export default function Games() {
         os: os,
         bit: bit,
       });
-      alert("Successfully Deployed");
+      alert("Successfuly Deployed");
       popupClose();
     } catch (err) {
-      console.log("Sorry Something Went Wrong");
+      alert("Something Went Wrong");
+      popupClose();
     }
   };
 
@@ -242,7 +243,6 @@ export default function Games() {
             {game.company} - {game.releaseDate}
           </p>
         </div>
-
         {/* Game Cover Image */}
         <div className="flex justify-center">
           <img
@@ -251,7 +251,6 @@ export default function Games() {
             className="max-w-full lg:max-w-4xl rounded-xl object-cover shadow-lg"
           />
         </div>
-
         {/* System Requirements Sections */}
         <div className="flex flex-col lg:flex-row justify-between lg:space-x-8 max-lg:space-y-8">
           <section className="flex-1 bg-slate-700 p-6 rounded-lg shadow-lg border border-slate-600 hover:bg-slate-600 transition duration-300">
@@ -280,7 +279,6 @@ export default function Games() {
             </ul>
           </section>
         </div>
-
         {/* Comparison Section */}
         <div className="bg-gray-900 p-6 rounded-lg shadow-lg space-y-6">
           <h2 className="text-2xl lg:text-3xl font-bold text-center">
@@ -426,7 +424,12 @@ export default function Games() {
             </button>
           </div>
         </div>
-        <Conclusion visible={visible} status={conclusionStat} issues={issues} />
+        <Conclusion
+          visible={visible}
+          status={conclusionStat}
+          issues={issues}
+          sysInfo={sendSysInfo}
+        />
       </div>
       <LoadingPopup
         visible={loading}

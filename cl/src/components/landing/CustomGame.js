@@ -660,7 +660,12 @@ export default function CustomGame() {
             </button>
           </div>
         </div>
-        <Conclusion visible={visible} status={conclusionStat} issues={issues} />
+        <Conclusion
+          visible={visible}
+          status={conclusionStat}
+          issues={issues}
+          sysInfo={sendSysInfo}
+        />
       </div>
       <LoadingPopup
         visible={loading}
