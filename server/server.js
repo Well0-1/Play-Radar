@@ -12,19 +12,6 @@ app.post("/system-info", (req, res) => {
   res.status(200).json({ message: "System info received successfully " });
 });
 
-async function diskSpace() {
-  try {
-    const fsSizes = await si.fsSize();
-    if (fsSizes.length > 0) {
-      return (fsSizes[0].available / (1024 * 1024 * 1024)).toFixed(2);
-    }
-    return 0;
-  } catch (err) {
-    console.error("Error retrieving disk space", err);
-    return 0;
-  }
-}
-
 async function gpuData() {
   try {
     const gpus = await si.graphics();
@@ -41,7 +28,6 @@ async function gpuData() {
 (async () => {
   try {
     await gpuData();
-    await diskSpace();
 
     const osNameModule = await import("os-name");
     osName = osNameModule.default;

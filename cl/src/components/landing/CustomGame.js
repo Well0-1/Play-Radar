@@ -3,9 +3,9 @@ import axios from "axios";
 import cpuData from "../data/cpu_data.json";
 import gpuData from "../data/gpu_data.json";
 import LoadingPopup from "../utils/LoadingPopup.js";
+import Conclusion from "../utils/Conclusion.js";
+import { validateSystem } from "../utils/validateSystem.js";
 import { getBenchmarkScore } from "../utils/getBenchmarkScore.js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -27,13 +27,8 @@ export default function CustomGame() {
   const [bit, setBit] = useState("");
   const [cpuSuggestions, setCpuSuggestions] = useState([]);
   const [gpuSuggestions, setGpuSuggestions] = useState([]);
-  const [suggestionIndex, setSuggestionIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
   const [timeoutStat, setTimeoutStat] = useState(false);
-  const cpuInputRef = useRef(null);
-  const gpuInputRef = useRef(null);
-  const cpuSuggestionsRef = useRef(null);
-  const gpuSuggestionsRef = useRef(null);
   const [minCpu, setMinCpu] = useState("");
   const [minGpu, setMinGpu] = useState("");
   const [minRam, setMinRam] = useState("");
@@ -48,11 +43,27 @@ export default function CustomGame() {
   const [minGpuSuggestions, setMinGpuSuggestions] = useState([]);
   const [recCpuSuggestions, setRecCpuSuggestions] = useState([]);
   const [recGpuSuggestions, setRecGpuSuggestions] = useState([]);
-  // idc anymore 😫
+  const [conclusionStat, setConclusionStat] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [issues, setIssues] = useState([]);
+
+  // 😫
+
+  const cpuInputRef = useRef(null);
+  const gpuInputRef = useRef(null);
+  const minCpuInputRef = useRef(null);
+  const minGpuInputRef = useRef(null);
+  const recCpuInputRef = useRef(null);
+  const recGpuInputRef = useRef(null);
+  const cpuSuggestionsRef = useRef(null);
+  const gpuSuggestionsRef = useRef(null);
+  const minCpuSuggestionsRef = useRef(null);
+  const minGpuSuggestionsRef = useRef(null);
+  const recCpuSuggestionsRef = useRef(null);
+  const recGpuSuggestionsRef = useRef(null);
 
   const handleInputChange = (e, setState, setSuggestions, data) => {
     const { value } = e.target;
-    setSuggestionIndex(0);
     setState(value);
 
     const matches = data.filter((model) => model.model.toLowerCase().includes(value.toLowerCase()));
@@ -61,69 +72,57 @@ export default function CustomGame() {
   };
 
   const handleSuggestionClick = (suggestion, type) => {
-    if (type === "cpu") {
-      setCpuModel(suggestion);
-      setCpuSuggestions([]);
-    } else if (type === "gpu") {
-      setGpuModel(suggestion);
-      setGpuSuggestions([]);
-    } else if (type === "minGpu") {
-      setMinGpu(suggestion);
-      setMinGpuSuggestions([]);
-    } else if (type === "minCpu") {
-      setMinCpu(suggestion);
-      setMinCpuSuggestions([]);
-    } else if (type === "recGpu") {
-      setRecGpu(suggestion);
-      setRecGpuSuggestions([]);
-    } else if (type === "recCpu") {
-      setRecCpu(suggestion);
-      setRecCpuSuggestions([]);
-    }
-  };
+    const stateMap = {
+      cpu: setCpuModel,
+      gpu: setGpuModel,
+      minCpu: setMinCpu,
+      minGpu: setMinGpu,
+      recCpu: setRecCpu,
+      recGpu: setRecGpu,
+    };
 
-  const handleKeyDown = (e, suggestions, handleSuggestionClick, type) => {
-    if (e.key === "Tab") {
-      e.preventDefault();
-      setSuggestionIndex((prevIndex) => (prevIndex < suggestions.length - 1 ? prevIndex + 1 : 0));
-    } else if (e.key === "Enter" && suggestionIndex !== -1) {
-      handleSuggestionClick(suggestions[suggestionIndex], type);
-      setSuggestionIndex(-1);
-    }
+    const suggestionsMap = {
+      cpu: setCpuSuggestions,
+      gpu: setGpuSuggestions,
+      minCpu: setMinCpuSuggestions,
+      minGpu: setMinGpuSuggestions,
+      recCpu: setRecCpuSuggestions,
+      recGpu: setRecGpuSuggestions,
+    };
+
+    const setState = stateMap[type];
+    const setSuggestions = suggestionsMap[type];
+
+    setState(suggestion);
+    setSuggestions([]);
   };
 
   const handleBlur = (type, event) => {
-    const inputValue = type === "cpu" ? cpuModel : gpuModel;
+    const refMap = {
+      cpu: cpuSuggestionsRef,
+      gpu: gpuSuggestionsRef,
+      minCpu: minCpuSuggestionsRef,
+      minGpu: minGpuSuggestionsRef,
+      recCpu: recCpuSuggestionsRef,
+      recGpu: recGpuSuggestionsRef,
+    };
 
-    if (inputValue.trim() === "") {
-      let setSuggestionFunction = null;
+    const suggestionsMap = {
+      cpu: setCpuSuggestions,
+      gpu: setGpuSuggestions,
+      minCpu: setMinCpuSuggestions,
+      minGpu: setMinGpuSuggestions,
+      recCpu: setRecCpuSuggestions,
+      recGpu: setRecGpuSuggestions,
+    };
 
-      switch (type) {
-        case "cpu":
-          setSuggestionFunction = setCpuSuggestions;
-          break;
-        case "gpu":
-          setSuggestionFunction = setGpuSuggestions;
-          break;
-        case "minGpu":
-          setSuggestionFunction = () => setTimeout(() => setMinGpuSuggestions([]), 100);
-          break;
-        case "minCpu":
-          setSuggestionFunction = () => setTimeout(() => setMinCpuSuggestions([]), 100);
-          break;
-        case "recGpu":
-          setSuggestionFunction = () => setTimeout(() => setRecGpuSuggestions([]), 100);
-          break;
-        case "recCpu":
-          setSuggestionFunction = () => setTimeout(() => setRecCpuSuggestions([]), 100);
-          break;
-        default:
-          return;
-      }
+    const suggestionsRef = refMap[type];
+    const setSuggestions = suggestionsMap[type];
+    const isOutsideClick =
+      suggestionsRef.current && !suggestionsRef.current.contains(event.relatedTarget);
 
-      if (setSuggestionFunction) {
-        setSuggestionFunction([]);
-      }
+    if (isOutsideClick) {
+      setSuggestions([]);
     }
   };
 
@@ -165,13 +164,22 @@ export default function CustomGame() {
     setLoading(loading ? setLoading(false) : setTimeoutStat(false));
   };
 
-  const checkBit = () => {
-    return bit >= game.minRequirements.bit;
-  };
-
-  const checkOs = () => {
-    const v = parseInt(os.slice(-2).trim());
-    return os.toLowerCase().includes("windows") && v >= 8;
+  const checkSystem = () => {
+    const res = validateSystem(
+      cpuModel,
+      gpuModel,
+      ram,
+      os,
+      bit,
+      minCpu,
+      minGpu,
+      minRam,
+      minBit,
+      minOs
+    );
+    setIssues(res === true ? [] : res);
+    setConclusionStat(res === true);
+    setVisible(true);
   };
 
   const game = {
@@ -257,30 +265,75 @@ export default function CustomGame() {
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 text-white p-6">
-      <div className={`${loading || timeoutStat ? "blur-sm" : "blur-0"}`}>
+      <div className={`${loading || timeoutStat ? "blur-sm" : "blur-0"} space-y-12`}>
+        <div className="text-center p-6 bg-gradient-to-r from-indigo-700 via-slate-700 to-pink-700 rounded-lg shadow-2xl space-y-6 opacity-70">
+          <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-b from-indigo-400 via-slate-400 to-pink-700">
+            {/*Color is Still debatable*/}
+            Custom Game Requirements Checker
+          </h1>
+          <p className="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
+            Configure the minimum and recommended system requirements for the game you want to play.
+            Compare them with your current system to ensure you have what it takes to enjoy the game
+            smoothly.
+          </p>
+          <div className="space-y-4 text-center text-gray-300">
+            <p className="text-md">Follow these steps to see if your system can handle the game:</p>
+            <ol className="list-decimal list-inside space-y-3 text-center lg:text-left max-w-md mx-auto ">
+              <li className="flex items-start space-x-2">
+                <span className="text-indigo-400">1.</span>
+                <span>Enter the minimum and recommended requirements for the game.</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="text-indigo-400">2.</span>
+                <span>
+                  Provide your system's information, or use the Auto-fill option to load it
+                  automatically.
+                </span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <span className="text-indigo-400">3.</span>
+                <span>Click "Submit" to see if your system meets the game's requirements.</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
         {/* System Requirements Sections */}
-        <div className="flex flex-col lg:flex-row justify-between lg:space-x-8 mb-12">
-          <section className="flex-1 bg-slate-700 p-6 rounded-lg shadow-lg border border-slate-600 hover:bg-slate-600 transition duration-300 mb-8 lg:mb-0">
+        <div className="flex flex-col lg:flex-row justify-between lg:space-x-8 max-lg:space-y-8">
+          <section className="flex-1 bg-slate-700 p-6 rounded-lg shadow-xl border border-slate-600 hover:bg-slate-600 transition-colors duration-500">
             <h2 className="text-2xl text-center lg:text-start font-bold pb-4">
               Minimum System Requirements
             </h2>
-            <ul className="list-none pl-6 space-y-2 text-gray-300 font-inter">
+            <ul className="list-none pl-6 space-y-4 text-gray-300 font-inter">
               <li>
                 <strong>Processor:</strong>
                 <input
                   type="text"
                   value={minCpu}
-                  className="bg-slate-800 p-2 rounded-md w-full text-white"
+                  className="bg-slate-800 p-2 rounded-lg w-full text-white shadow-inner"
                   onChange={(e) => handleInputChange(e, setMinCpu, setMinCpuSuggestions, cpuData)}
+                  onFocus={() =>
+                    handleInputChange(
+                      { target: { value: minCpu } },
+                      setMinCpu,
+                      setMinCpuSuggestions,
+                      cpuData
+                    )
+                  }
                   onBlur={(e) => handleBlur("minCpu", e)}
+                  ref={minCpuInputRef}
                 />
                 {minCpuSuggestions.length > 0 && (
                   <div className="relative">
-                    <ul className="bg-gray-700 p-2 rounded-md mt-2 absolute w-full">
+                    <ul
+                      className="bg-gray-700 p-2 rounded-lg mt-2 absolute w-full shadow-lg"
+                      tabIndex={-1}
+                      ref={minCpuSuggestionsRef}
+                    >
                       {minCpuSuggestions.map((suggestion, index) => (
                         <li
                           key={index}
-                          className="text-white cursor-pointer outline-none p-0.5 rounded-sm"
+                          className="text-white cursor-pointer outline-none p-0.5 rounded-sm hover:bg-blue-600 transition-colors"
                           onClick={() => handleSuggestionClick(suggestion, "minCpu")}
                         >
                           {suggestion}
@@ -295,20 +348,31 @@ export default function CustomGame() {
                 <input
                   type="text"
                   value={minGpu}
-                  className="bg-slate-800 p-2 rounded-md w-full text-white"
+                  className="bg-slate-800 p-2 rounded-lg w-full text-white shadow-inner"
                   onChange={(e) => handleInputChange(e, setMinGpu, setMinGpuSuggestions, gpuData)}
+                  onFocus={() =>
+                    handleInputChange(
+                      { target: { value: minGpu } },
+                      setMinGpu,
+                      setMinGpuSuggestions,
+                      gpuData
+                    )
+                  }
                   onBlur={(e) => handleBlur("minGpu", e)}
+                  ref={minGpuInputRef}
                 />
                 {minGpuSuggestions.length > 0 && (
                   <div className="relative">
                     <ul
-                      className="bg-gray-700 p-2 rounded-md mt-2 absolute w-full"
+                      className="bg-gray-700 p-2 rounded-lg mt-2 absolute w-full shadow-lg"
                       onBlur={(e) => handleBlur("minGpu", e)}
+                      tabIndex={-1}
+                      ref={minGpuSuggestionsRef}
                     >
                       {minGpuSuggestions.map((suggestion, index) => (
                         <li
                           key={index}
-                          className="text-white cursor-pointer outline-none p-0.5 rounded-sm"
+                          className="text-white cursor-pointer outline-none p-0.5 rounded-sm hover:bg-blue-600 transition-colors"
                           onClick={() => handleSuggestionClick(suggestion, "minGpu")}
                         >
                           {suggestion}
@@ -324,7 +388,7 @@ export default function CustomGame() {
                   type="number"
                   value={minRam}
                   onChange={(e) => setMinRam(e.target.value)}
-                  className="bg-slate-800 p-2 rounded-md w-full text-white"
+                  className="bg-slate-800 p-2 rounded-lg w-full text-white shadow-inner"
                 />
               </li>
               <li>
@@ -333,7 +397,7 @@ export default function CustomGame() {
                   type="text"
                   value={minOs}
                   onChange={(e) => setMinOs(e.target.value)}
-                  className="bg-slate-800 p-2 rounded-md w-full text-white"
+                  className="bg-slate-800 p-2 rounded-lg w-full text-white shadow-inner"
                 />
               </li>
               <li>
@@ -342,33 +406,46 @@ export default function CustomGame() {
                   type="number"
                   value={minBit}
                   onChange={(e) => setMinBit(e.target.value)}
-                  className="bg-slate-800 p-2 rounded-md w-full text-white"
+                  className="bg-slate-800 p-2 rounded-lg w-full text-white shadow-inner"
                 />
               </li>
             </ul>
           </section>
 
-          <section className="flex-1 bg-slate-700 p-6 rounded-lg shadow-lg border border-slate-600 hover:bg-slate-600 transition duration-300">
+          <section className="flex-1 bg-slate-700 p-6 rounded-lg shadow-xl border border-slate-600 hover:bg-slate-600 transition-colors duration-500">
             <h2 className="text-2xl text-center lg:text-start font-bold pb-4">
               Recommended System Requirements
             </h2>
-            <ul className="list-none pl-6 space-y-2 text-gray-300 font-inter">
+            <ul className="list-none pl-6 space-y-4 text-gray-300 font-inter">
               <li>
                 <strong>Processor:</strong>
                 <input
                   type="text"
                   value={recCpu}
-                  className="bg-slate-800 p-2 rounded-md w-full text-white"
+                  className="bg-slate-800 p-2 rounded-lg w-full text-white shadow-inner"
                   onChange={(e) => handleInputChange(e, setRecCpu, setRecCpuSuggestions, cpuData)}
+                  onFocus={() =>
+                    handleInputChange(
+                      { target: { value: recCpu } },
+                      setRecCpu,
+                      setRecCpuSuggestions,
+                      cpuData
+                    )
+                  }
                   onBlur={(e) => handleBlur("recCpu", e)}
+                  ref={recCpuInputRef}
                 />
                 {recCpuSuggestions.length > 0 && (
                   <div className="relative">
-                    <ul className="bg-gray-700 p-2 rounded-md mt-2 absolute w-full">
+                    <ul
+                      className="bg-gray-700 p-2 rounded-lg mt-2 absolute w-full shadow-lg"
+                      tabIndex={-1}
+                      ref={recCpuSuggestionsRef}
+                    >
                       {recCpuSuggestions.map((suggestion, index) => (
                         <li
                           key={index}
-                          className="text-white cursor-pointer outline-none p-0.5 rounded-sm"
+                          className="text-white cursor-pointer outline-none p-0.5 rounded-sm hover:bg-blue-600 transition-colors"
                           onClick={() => handleSuggestionClick(suggestion, "recCpu")}
                         >
                           {suggestion}
@@ -383,17 +460,30 @@ export default function CustomGame() {
                 <input
                   type="text"
                   value={recGpu}
-                  className="bg-slate-800 p-2 rounded-md w-full text-white"
+                  className="bg-slate-800 p-2 rounded-lg w-full text-white shadow-inner"
                   onChange={(e) => handleInputChange(e, setRecGpu, setRecGpuSuggestions, gpuData)}
+                  onFocus={() =>
+                    handleInputChange(
+                      { target: { value: recGpu } },
+                      setRecGpu,
+                      setRecGpuSuggestions,
+                      gpuData
+                    )
+                  }
                   onBlur={(e) => handleBlur("recGpu", e)}
+                  ref={recGpuInputRef}
                 />
                 {recGpuSuggestions.length > 0 && (
                   <div className="relative">
-                    <ul className="bg-gray-700 p-2 rounded-md mt-2 absolute w-full">
+                    <ul
+                      className="bg-gray-700 p-2 rounded-lg mt-2 absolute w-full shadow-lg"
+                      ref={recGpuSuggestionsRef}
+                      tabIndex={-1}
+                    >
                       {recGpuSuggestions.map((suggestion, index) => (
                         <li
                           key={index}
-                          className="text-white cursor-pointer outline-none p-0.5 rounded-sm"
+                          className="text-white cursor-pointer outline-none p-0.5 rounded-sm hover:bg-blue-600 transition-colors"
                           onClick={() => handleSuggestionClick(suggestion, "recGpu")}
                         >
                           {suggestion}
@@ -410,7 +500,7 @@ export default function CustomGame() {
                   type="number"
                   value={recRam}
                   onChange={(e) => setRecRam(e.target.value)}
-                  className="bg-slate-800 p-2 rounded-md w-full text-white"
+                  className="bg-slate-800 p-2 rounded-lg w-full text-white shadow-inner"
                 />
               </li>
               <li>
@@ -419,7 +509,7 @@ export default function CustomGame() {
                   type="text"
                   value={recOs}
                   onChange={(e) => setRecOs(e.target.value)}
-                  className="bg-slate-800 p-2 rounded-md w-full text-white"
+                  className="bg-slate-800 p-2 rounded-lg w-full text-white shadow-inner"
                 />
               </li>
               <li>
@@ -428,22 +518,21 @@ export default function CustomGame() {
                   type="number"
                   value={recBit}
                   onChange={(e) => setRecBit(e.target.value)}
-                  className="bg-slate-800 p-2 rounded-md w-full text-white"
+                  className="bg-slate-800 p-2 rounded-lg w-full text-white shadow-inner"
                 />
               </li>
             </ul>
           </section>
         </div>
-
         {/* Comparison Section */}
-        <div className="bg-gray-900 p-6 rounded-lg shadow-lg mb-12">
-          <h2 className="text-2xl lg:text-3xl font-bold text-center mb-6">
+        <div className="bg-gray-900 p-6 rounded-lg shadow-xl space-y-6">
+          <h2 className="text-2xl lg:text-3xl font-bold text-center">
             Your System vs Game Requirements
           </h2>
-          <div className="w-full lg:w-2/3 h-64 mx-auto mb-6">
+          <div className="w-full lg:w-2/3 h-64 mx-auto">
             <Bar data={data} options={options} />
           </div>
-          <h5 className="text-xs font-extralight text-slate-400 text-center mb-6">
+          <h5 className="text-xs font-extralight text-slate-400 text-center">
             -____________________________________________________-
           </h5>
           <div className="space-y-4">
@@ -464,7 +553,6 @@ export default function CustomGame() {
                       cpuData
                     )
                   }
-                  onKeyDown={(e) => handleKeyDown(e, cpuSuggestions, handleSuggestionClick, "cpu")}
                   onBlur={(e) => handleBlur("cpu", e)}
                   ref={cpuInputRef}
                 />
@@ -474,18 +562,12 @@ export default function CustomGame() {
                   className="bg-slate-700 p-2 rounded-md mt-2"
                   ref={cpuSuggestionsRef}
                   tabIndex={-1}
-                  onBlur={(e) => handleBlur("cpu", e)}
                 >
                   {cpuSuggestions.map((suggestion, index) => (
                     <li
                       key={index}
-                      className={`text-white cursor-pointer outline-none p-0.5 rounded-sm ${
-                        index === suggestionIndex ? "bg-blue-600" : ""
-                      }`}
+                      className="text-white cursor-pointer outline-none p-0.5 rounded-sm"
                       onClick={() => handleSuggestionClick(suggestion, "cpu")}
-                      onKeyDown={(e) =>
-                        handleKeyDown(e, cpuSuggestions, handleSuggestionClick, "cpu")
-                      }
                       tabIndex={0}
                     >
                       {suggestion}
@@ -508,7 +590,6 @@ export default function CustomGame() {
                       gpuData
                     )
                   }
-                  onKeyDown={(e) => handleKeyDown(e, gpuSuggestions, handleSuggestionClick, "gpu")}
                   onBlur={(e) => handleBlur("gpu", e)}
                   ref={gpuInputRef}
                 />
@@ -517,19 +598,13 @@ export default function CustomGame() {
                 <ul
                   className="bg-slate-700 p-2 rounded-md mt-2"
                   ref={gpuSuggestionsRef}
-                  onBlur={(e) => handleBlur("gpu", e)}
+                  tabIndex={-1}
                 >
                   {gpuSuggestions.map((suggestion, index) => (
                     <li
                       key={index}
-                      className={`text-white cursor-pointer outline-none p-0.5 rounded-sm ${
-                        index === suggestionIndex ? "bg-blue-600" : ""
-                      }`}
+                      className="text-white cursor-pointer outline-none p-0.5 rounded-sm"
                       onClick={() => handleSuggestionClick(suggestion, "gpu")}
-                      onKeyDown={(e) =>
-                        handleKeyDown(e, gpuSuggestions, handleSuggestionClick, "gpu")
-                      }
-                      tabIndex={0}
                     >
                       {suggestion}
                     </li>
@@ -555,58 +630,37 @@ export default function CustomGame() {
                     onChange={(e) => setOs(e.target.value)}
                     className="bg-slate-800 p-2 rounded-md w-full text-white"
                   />
-                  <div className="absolute right-2 top-2 h-full">
-                    {os && (
-                      <FontAwesomeIcon
-                        icon={checkOs() ? faCheck : faTimes}
-                        size="lg"
-                        className={`flex items-center ${
-                          checkOs() ? "text-green-500" : "text-red-500"
-                        }`}
-                      />
-                    )}
-                  </div>
                 </div>
               </li>
               <li>
                 <strong>Bit:</strong>
                 <div className="relative flex">
                   <input
-                    type="text"
+                    type="number"
                     value={bit}
                     onChange={(e) => setBit(e.target.value)}
                     className="bg-slate-800 p-2 rounded-md w-full text-white"
                   />
-                  <div className="absolute right-2 top-2 h-full">
-                    {bit && (
-                      <FontAwesomeIcon
-                        icon={checkBit() ? faCheck : faTimes}
-                        size="lg"
-                        className={`flex items-center  ${
-                          checkBit() ? "text-green-500" : "text-red-500"
-                        }`}
-                      />
-                    )}
-                  </div>
                 </div>
               </li>
             </ul>
           </div>
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between">
             <button
-              onClick={handleAutoFill}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg"
+              className="bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300"
+              onClick={checkSystem}
             >
               Submit
             </button>
             <button
-              onClick={handleAutoFill} //For now Dont Forget to Change
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-lg"
+              className="bg-green-700 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300"
+              onClick={handleAutoFill}
             >
               Auto-Fill
             </button>
           </div>
         </div>
+        <Conclusion visible={visible} status={conclusionStat} issues={issues} />
       </div>
       <LoadingPopup
         visible={loading}

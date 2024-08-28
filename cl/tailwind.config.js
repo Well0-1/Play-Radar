@@ -6,6 +6,7 @@ module.exports = {
     listStyleType: {
       disc: "disc",
       square: "square",
+      decimal: "decimal",
     },
     fontFamily: {
       inter: ["Inter", "sans-serif"],

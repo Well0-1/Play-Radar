@@ -3,9 +3,9 @@ import axios from "axios";
 import cpuData from "../data/cpu_data.json";
 import gpuData from "../data/gpu_data.json";
 import LoadingPopup from "../utils/LoadingPopup.js";
+import Conclusion from "../utils/Conclusion.js";
 import { getBenchmarkScore } from "../utils/getBenchmarkScore.js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { validateSystem } from "../utils/validateSystem.js";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -24,26 +24,31 @@ export default function Games() {
   const [gpuModel, setGpuModel] = useState("");
   const [ram, setRam] = useState("");
   const [os, setOs] = useState("");
-  const [bit, setBit] = useState(null);
-  const [freeSpace, setFreeSpace] = useState();
+  const [bit, setBit] = useState("");
   const [cpuSuggestions, setCpuSuggestions] = useState([]);
   const [gpuSuggestions, setGpuSuggestions] = useState([]);
   const [suggestionIndex, setSuggestionIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
   const [timeoutStat, setTimeoutStat] = useState(false);
+  const [visible, setVisible] = useState(true);
   const cpuInputRef = useRef(null);
   const gpuInputRef = useRef(null);
   const cpuSuggestionsRef = useRef(null);
   const gpuSuggestionsRef = useRef(null);
+  const [issues, setIssues] = useState([]);
+  const [conclusionStat, setConclusionStat] = useState(null);
 
   const handleInputChange = (e, setState, setSuggestions, data) => {
     const { value } = e.target;
     setSuggestionIndex(0);
     setState(value);
 
-    const matches = data.filter((model) => model.model.toLowerCase().includes(value.toLowerCase()));
+    const matches = data
+      .filter((model) => model.model.toLowerCase().includes(value.toLowerCase()))
+      .slice(0, 5)
+      .map((match) => match.model);
 
-    setSuggestions(matches.slice(0, 5).map((match) => match.model));
+    setSuggestions(matches);
   };
 
   const handleSuggestionClick = (suggestion, type) => {
@@ -67,17 +72,6 @@ export default function Games() {
   };
 
   const handleBlur = (type, event) => {
-    const inputValue = type === "cpu" ? cpuModel : gpuModel;
-
-    if (inputValue.trim() === "") {
-      if (type === "cpu") {
-        setCpuSuggestions([]);
-      } else if (type === "gpu") {
-        setGpuSuggestions([]);
-      }
-      return;
-    }
-
     const suggestionsRef = type === "cpu" ? cpuSuggestionsRef : gpuSuggestionsRef;
     const isOutsideClick =
       suggestionsRef.current && !suggestionsRef.current.contains(event.relatedTarget);
@@ -99,15 +93,33 @@ export default function Games() {
       setGpuModel(data.gpuModel);
       setRam(data.ramGB);
       setOs(data.userOs);
-      setFreeSpace(data.freeSpace);
       setLoading(false);
       setBit(data.bit === "x64" || data.bit === "amd64" || data.bit === "x86_64" ? 64 : 32);
+      checkSystem();
     } catch (err) {
       setTimeout(() => {
         setLoading(false);
         setTimeoutStat(true);
       }, 2000);
     }
+  };
+
+  const checkSystem = () => {
+    const res = validateSystem(
+      cpuModel,
+      gpuModel,
+      ram,
+      os,
+      bit,
+      game.minRequirements.cpu,
+      game.minRequirements.gpu,
+      game.minRequirements.ram,
+      game.minRequirements.bit,
+      game.minRequirements.os
+    );
+    setIssues(res === true ? [] : res);
+    setConclusionStat(res === true);
+    setVisible(true);
   };
 
   const sendSysInfo = async () => {
@@ -134,15 +146,6 @@ export default function Games() {
     }
   };
 
-  const checkBit = () => {
-    return bit >= game.minRequirements.bit;
-  };
-
-  const checkOs = () => {
-    const v = parseInt(os.slice(-2).trim());
-    return os.toLowerCase().includes("windows") && v >= 8;
-  };
-
   const game = {
     title: "Mafia: Definitive Edition",
     company: "Hangar 13",
@@ -150,14 +153,14 @@ export default function Games() {
     imageUrl:
       "https://firebasestorage.googleapis.com/v0/b/canyourunit-c1185.appspot.com/o/codmw.jpg?alt=media&token=08e0cbcb-6f74-44cb-b92e-9859721ba0c8",
     minRequirements: {
-      os: "Windows 10 64-bit",
+      os: "Windows 10",
       cpu: "Intel Core i3-560 @ 3.33GHz",
       ram: 6,
       gpu: "GeForce GTX 460",
       bit: 64,
     },
     recRequirements: {
-      os: "Windows 10 64-bit",
+      os: "Windows 10",
       cpu: "Intel Core i5-2500 @ 3.30GHz",
       ram: 8,
       gpu: "GeForce GTX 670",
@@ -231,17 +234,17 @@ export default function Games() {
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 text-white p-6">
-      <div className={`${loading || timeoutStat ? "blur-sm" : "blur-0"}`}>
+      <div className={`${loading || timeoutStat ? "blur-sm" : "blur-0"} space-y-10`}>
         {/* Game Title and Release Information */}
-        <div className="text-center mb-10">
+        <div className="text-center">
           <h1 className="text-4xl lg:text-5xl font-bold tracking-wide">{game.title}</h1>
-          <p className="text-gray-400 mt-2">
+          <p className="text-gray-400 pt-2">
             {game.company} - {game.releaseDate}
           </p>
         </div>
 
         {/* Game Cover Image */}
-        <div className="flex justify-center mb-12">
+        <div className="flex justify-center">
           <img
             src={game.imageUrl}
             alt={`${game.title} Cover`}
@@ -250,8 +253,8 @@ export default function Games() {
         </div>
 
         {/* System Requirements Sections */}
-        <div className="flex flex-col lg:flex-row justify-between lg:space-x-8 mb-12">
-          <section className="flex-1 bg-slate-700 p-6 rounded-lg shadow-lg border border-slate-600 hover:bg-slate-600 transition duration-300 mb-8 lg:mb-0">
+        <div className="flex flex-col lg:flex-row justify-between lg:space-x-8 max-lg:space-y-8">
+          <section className="flex-1 bg-slate-700 p-6 rounded-lg shadow-lg border border-slate-600 hover:bg-slate-600 transition duration-300">
             <h2 className="text-2xl lg:text-3xl text-center lg:text-start font-bold pb-4">
               Minimum System Requirements
             </h2>
@@ -279,14 +282,14 @@ export default function Games() {
         </div>
 
         {/* Comparison Section */}
-        <div className="bg-gray-900 p-6 rounded-lg shadow-lg mb-12">
-          <h2 className="text-2xl lg:text-3xl font-bold text-center mb-6">
+        <div className="bg-gray-900 p-6 rounded-lg shadow-lg space-y-6">
+          <h2 className="text-2xl lg:text-3xl font-bold text-center">
             Your System vs Game Requirements
           </h2>
-          <div className="w-full lg:w-2/3 h-64 mx-auto mb-6">
+          <div className="w-full lg:w-2/3 h-64 mx-auto">
             <Bar data={data} options={options} />
           </div>
-          <h5 className="text-xs font-extralight text-slate-400 text-center mb-6">
+          <h5 className="text-xs font-extralight text-slate-400 text-center">
             -____________________________________________________-
           </h5>
           <div className="space-y-4">
@@ -314,10 +317,9 @@ export default function Games() {
               </li>
               {cpuSuggestions.length > 0 && (
                 <ul
-                  className="bg-slate-700 p-2 rounded-md mt-2"
+                  className="bg-slate-700 p-2 rounded-md pt-2"
                   ref={cpuSuggestionsRef}
                   tabIndex={-1}
-                  onBlur={(e) => handleBlur("cpu", e)}
                 >
                   {cpuSuggestions.map((suggestion, index) => (
                     <li
@@ -357,11 +359,7 @@ export default function Games() {
                 />
               </li>
               {gpuSuggestions.length > 0 && (
-                <ul
-                  className="bg-slate-700 p-2 rounded-md mt-2"
-                  ref={gpuSuggestionsRef}
-                  onBlur={(e) => handleBlur("gpu", e)}
-                >
+                <ul className="bg-slate-700 p-2 rounded-md pt-2" ref={gpuSuggestionsRef}>
                   {gpuSuggestions.map((suggestion, index) => (
                     <li
                       key={index}
@@ -398,17 +396,6 @@ export default function Games() {
                     onChange={(e) => setOs(e.target.value)}
                     className="bg-slate-800 p-2 rounded-md w-full text-white"
                   />
-                  <div className="absolute right-2 top-2 h-full">
-                    {os && (
-                      <FontAwesomeIcon
-                        icon={checkOs() ? faCheck : faTimes}
-                        size="lg"
-                        className={`flex items-center ${
-                          checkOs() ? "text-green-500" : "text-red-500"
-                        }`}
-                      />
-                    )}
-                  </div>
                 </div>
               </li>
               <li>
@@ -420,36 +407,26 @@ export default function Games() {
                     onChange={(e) => setBit(e.target.value)}
                     className="bg-slate-800 p-2 rounded-md w-full text-white"
                   />
-                  <div className="absolute right-2 top-2 h-full">
-                    {bit && (
-                      <FontAwesomeIcon
-                        icon={checkBit() ? faCheck : faTimes}
-                        size="lg"
-                        className={`flex items-center  ${
-                          checkBit() ? "text-green-500" : "text-red-500"
-                        }`}
-                      />
-                    )}
-                  </div>
                 </div>
               </li>
             </ul>
           </div>
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between pt-6">
             <button
-              onClick={handleAutoFill}
+              onClick={checkSystem}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-lg"
             >
               Submit
             </button>
             <button
-              onClick={handleAutoFill} //For now Dont Forget to Change
+              onClick={handleAutoFill}
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-lg"
             >
               Auto-Fill
             </button>
           </div>
         </div>
+        <Conclusion visible={visible} status={conclusionStat} issues={issues} />
       </div>
       <LoadingPopup
         visible={loading}
