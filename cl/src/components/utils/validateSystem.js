@@ -18,15 +18,30 @@ export const validateSystem = (cpu, gpu, ram, os, bit, minCpu, minGpu, minRam, m
     "Windows 11": 11,
   };
 
-  if (!cpu || !gpu || !ram || !os || !bit || !minCpu || !minGpu || !minRam || !minBit || !minOs) {
-    issues.push("You need to provide complete data entry.");
-    return issues;
+  const requiredFields = [cpu, gpu, ram, os, bit, minCpu, minGpu, minRam, minBit, minOs];
+
+  if (requiredFields.includes(undefined) || requiredFields.includes(null)) {
+    return ["You need to provide complete data entry."];
   }
 
-  if ((!OS_VERSIONS[os] || !OS_VERSIONS[minOs]) && !os.includes("Linux")) {
-    issues.push("Invalid operating system version provided.");
-    return issues;
+  const isValidOS = os.includes("Linux") || (OS_VERSIONS[os] && OS_VERSIONS[minOs]);
+
+  if (!isValidOS) {
+    return ["Invalid operating system version provided."];
   }
+
+  const scores = [
+    { score: minCpuScore, message: "Invalid minimum CPU name" },
+    { score: minGpuScore, message: "Invalid minimum GPU name" },
+    { score: userCpuScore, message: "Invalid CPU name in your system info" },
+    { score: userGpuScore, message: "Invalid GPU name in your system info" },
+  ];
+
+  scores.forEach(({ score, message }) => {
+    if (score === "N/A") {
+      issues.push(message);
+    }
+  });
 
   if (userCpuScore < minCpuScore) {
     issues.push("CPU does not meet the minimum requirements. Consider upgrading your CPU");

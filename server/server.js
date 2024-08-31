@@ -1,10 +1,29 @@
-const express = require("express");
-const os = require("os");
-const si = require("systeminformation");
+import express from "express";
+import os from "os";
+import mongoose from "mongoose";
+import si from "systeminformation";
+import { config } from "dotenv";
+import gameRoutes from "./routes/gameRoutes.js";
+import cors from "cors";
+config();
+
 const PORT = process.env.PORT || 3001;
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+app.use("/api", gameRoutes);
+
+const mongoURI = process.env.mongoURI;
+
+mongoose
+  .connect(mongoURI)
+  .then(() =>
+    app.listen(PORT, () => {
+      console.log(`Database and Server Connection Successful, Listening on ${PORT}`);
+    })
+  )
+  .catch((err) => console.error("Error connecting to MongoDB Atlas:", err));
 
 app.post("/system-info", (req, res) => {
   const sysInfo = req.body;
@@ -15,30 +34,27 @@ app.post("/system-info", (req, res) => {
 async function gpuData() {
   try {
     const gpus = await si.graphics();
-    if (gpus && gpus.controllers.length > 0) {
-      return gpus.controllers[0].model;
-    }
-    return "No GPU found";
+    return gpus.controllers.length > 0 ? gpus.controllers[0].model : "No GPU found";
   } catch (err) {
     console.error("An Error has occurred", err);
     return "Error retrieving GPU data";
   }
 }
 
+let osName;
+
 (async () => {
   try {
-    await gpuData();
-
-    const osNameModule = await import("os-name");
-    osName = osNameModule.default;
+    const { default: osNameModule } = await import("os-name");
+    osName = osNameModule;
   } catch (error) {
-    console.error("Error importing os-name module: ", error);
+    console.error("Error importing os-name module:", error);
   }
 })();
 
 app.get("/api", async (req, res) => {
   try {
-    const userOs = await osName();
+    const userOs = osName();
     const bit = os.arch();
     const cpuModels = os.cpus().map((cpu) => cpu.model);
     const cpuModel = cpuModels.length > 0 ? cpuModels[0] : "No information available";
@@ -54,14 +70,11 @@ app.get("/api", async (req, res) => {
       bit,
     });
   } catch (err) {
+    console.error("Error retrieving system info:", err);
     res.status(500).json({ error: "Failed to retrieve system info" });
   }
 });
 
 app.get("/test", (req, res) => {
   res.json({ test: "test" });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
 });

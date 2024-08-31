@@ -5,7 +5,32 @@ import { faLaptopCode, faCog, faServer, faQuestionCircle } from "@fortawesome/fr
 export default function HowItWorks() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-700 to-slate-900 text-white p-4 sm:p-8">
-      {/* Header */}
+      {/* Section. Introduction */}
+      <section className="w-full text-center py-8 space-y-8">
+        <h1 className="text-3xl font-bold text-white">
+          Play Radar - Your Ultimate Game Compatibility Guide
+        </h1>
+        <p className="text-lg text-gray-300">
+          <strong>Play Radar</strong> is a platform designed to help gamers assess the compatibility
+          of their system with various video games. Our goal is to provide a comprehensive and
+          user-friendly experience, enabling users to understand their hardware's capabilities and
+          how well they can run specific games.
+        </p>
+
+        {/* Section: What is Play Radar*/}
+        <div className="pt-6 text-center">
+          <h2 className="text-3xl font-bold text-white">🎮 What is Play Radar?</h2>
+          <p className="pt-4 text-lg text-gray-300">
+            Play Radar is a web application that gathers system information from your computer, such
+            as CPU, GPU, RAM details. It then compares these specifications against the minimum and
+            recommended requirements of popular games, providing an instant compatibility analysis.
+            Whether you're looking to check if your current setup can handle the latest games or
+            planning to upgrade your system, Play Radar has you covered!
+          </p>
+        </div>
+      </section>
+
+      {/* Section: How It Works */}
       <header className="w-full text-center py-8">
         <h1 className="text-3xl font-bold text-white">How it Works</h1>
         <p className="mt-4 text-lg text-gray-300">
@@ -25,7 +50,7 @@ export default function HowItWorks() {
             to assess its capabilities.
           </p>
         </div>
-        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-star font-mono">
+        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
           <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
             {`// This is how we gather your system information
 app.get("/api", async (req, res) => {

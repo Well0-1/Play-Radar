@@ -1,6 +1,52 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import SearchBar from "../utils/SearchBar";
+import { Skeleton } from "@mui/material";
 
 export default function Main() {
+  const [games, setGames] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const res = await axios.get("http://localhost:3001/api/games");
+        setGames(res.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching games:", err);
+      }
+    };
+
+    fetchGames();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen relative flex flex-col max-2xl:pb-4 2xl:p-[2%] bg-gradient-to-b from-slate-800 to-slate-900">
+        <div className="w-full flex lg:justify-between lg:p-4">
+          <div className="flex items-center justify-center max-lg:hidden pl-5">
+            <Skeleton variant="rounded" width={"15rem"} height={"1.25rem"} />
+          </div>
+          <div className="flex items-center max-lg:w-full w-2/5">
+            <Skeleton variant="rounded" width={"100%"} height={"3.5rem"} />
+          </div>
+        </div>
+        <div className="sm:grid place-items-center grid-cols-4 gap-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:gap-0 text-white">
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
+        </div>
+      </div>
+    );
+  }
+
   const GameCard = ({ href, imgSrc, companyName, gameName, date }) => (
     <a className="p-1" href={href}>
       <div className="h-full w-full flex border border-gray-700 relative rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-600">
@@ -14,12 +60,20 @@ export default function Main() {
           </h2>
           <div className="flex justify-between items-center mt-1">
             <h1 className="text-lg font-bold text-white font-cairo">{gameName}</h1>
-            <h1 className="text-sm text-gray-400">{date}</h1>
+            <h1 className="text-sm text-gray-400">{date.slice(0, 4)}</h1>
           </div>
         </div>
       </div>
     </a>
   );
+
+  const filteredGames = games.filter((game) =>
+    game.gameName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
 
   return (
     <div className="w-full min-h-screen relative flex flex-col max-2xl:pb-4 2xl:p-[2%] bg-gradient-to-b from-slate-800 to-slate-900">
@@ -28,62 +82,30 @@ export default function Main() {
           <strong className="text-xl text-white font-cairo">Popular Games</strong>
         </div>
         <div className="flex items-center max-lg:w-full w-2/5">
-          <SearchBar />
+          <SearchBar onSearch={handleSearch} />
         </div>
       </div>
       <div className="sm:grid place-items-center grid-cols-4 gap-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:gap-0 text-white">
-        <GameCard
-          href={"/games"}
-          imgSrc={
-            "https://cdn1.epicgames.com/ee8802651a004c48999169fa32eb4903/offer/EGS_MafiaDefinitiveEditionPreOrder_Hangar13_G1A_00-1920x1080-268b01e611aa17de8caedd662b8462ab.jpg"
-          }
-          companyName={"Hangar 13"}
-          gameName={"Mafia"}
-          date={"2020"}
-        />{" "}
-        <GameCard
-          href={"/games"}
-          imgSrc={
-            "https://www.oyun.news/wp-content/uploads/call-of-duty-modern-warfare-incelemesi-rehberi.jpg"
-          }
-          companyName={"Infinity Ward"}
-          gameName={"Call Of Duty Modern Warfare"}
-          date={"2019"}
-        />{" "}
-        <GameCard
-          href={"/games"}
-          imgSrc={
-            "https://sm.ign.com/t/ign_tr/news/g/gta-6-rock/gta-6-rockstar-officially-unveils-first-trailer-early-after_d7ds.1280.jpg"
-          }
-          companyName={"Rockstar Games"}
-          gameName={"Grand Theft Auto VI"}
-          date={"2025"}
-        />{" "}
-        <GameCard
-          href={"/games"}
-          imgSrc={
-            "https://startamomblog.com/wp-content/uploads/2019/05/iso-republic-scenic-mountain-landscape-reflection.jpg"
-          }
-          companyName={"Rockstar Games"}
-          gameName={"Grand Theft Auto VI"}
-          date={"2025"}
-        />{" "}
-        <GameCard
-          href={"/games"}
-          imgSrc={
-            "https://www.cnet.com/a/img/resize/43bf7152f39f90a03df23c97a8a7ebb9a09ea520/hub/2022/02/23/f12a8db7-d99b-4b8d-9b09-d84f12661cf7/elden-ring-plakat.jpg?auto=webp&fit=bounds&height=1200&precrop=571,571,x357,y149&width=1200"
-          }
-          companyName={"Rockstar Games"}
-          gameName={"Grand Theft Auto VI"}
-          date={"2025"}
-        />{" "}
-        <GameCard
-          href={"/CustomGame"}
-          imgSrc={"https://images2.alphacoders.com/436/436580.jpg"}
-          companyName={"You Couldnt find the game you looking for ? "}
-          gameName={"No Problem! Click Here"}
-          date={"Custom"}
-        />
+        {filteredGames.length > 0 ? (
+          filteredGames.map((game) => (
+            <GameCard
+              key={game._id}
+              href={"/games/" + game._id}
+              imgSrc={game.imgUrl}
+              companyName={game.company}
+              gameName={game.gameName}
+              date={game.releaseDate}
+            />
+          ))
+        ) : (
+          <GameCard
+            href={"/customGame"}
+            imgSrc={"https://images2.alphacoders.com/436/436580.jpg"}
+            companyName={"Can't find your game?"}
+            gameName={"No worries! Click here to create your own game profile."}
+            date={"2024"}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import cpuData from "../data/cpu_data.json";
 import gpuData from "../data/gpu_data.json";
@@ -7,6 +8,8 @@ import Conclusion from "../utils/Conclusion.js";
 import { getBenchmarkScore } from "../utils/getBenchmarkScore.js";
 import { validateSystem } from "../utils/validateSystem.js";
 import { Bar } from "react-chartjs-2";
+import { Skeleton } from "@mui/material";
+
 import {
   Chart as ChartJS,
   BarElement,
@@ -20,6 +23,9 @@ import {
 ChartJS.register(BarElement, CategoryScale, LinearScale, LogarithmicScale, Tooltip, Legend);
 
 export default function Games() {
+  const { id } = useParams();
+  const [game, setGame] = useState(null);
+  const [gameVerify, setGameVerify] = useState(true);
   const [cpuModel, setCpuModel] = useState("");
   const [gpuModel, setGpuModel] = useState("");
   const [ram, setRam] = useState("");
@@ -38,6 +44,39 @@ export default function Games() {
   const gpuInputRef = useRef(null);
   const cpuSuggestionsRef = useRef(null);
   const gpuSuggestionsRef = useRef(null);
+
+  useEffect(() => {
+    axios
+      .get(`/api/game/${id}`)
+      .then((res) => {
+        setGame(res.data);
+        setGameVerify(false);
+      })
+      .catch((err) => {
+        console.error("Games data is corrupted");
+      });
+  }, [id]);
+
+  if (gameVerify) {
+    return (
+      <div className="w-full min-h-screen bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 text-white p-6">
+        <div className="space-y-10 pb-12">
+          <div className="flex items-center justify-center flex-col">
+            <Skeleton variant="text" width={"40%"} sx={{ fontSize: "2.5rem" }} />
+            <Skeleton variant="text" width={"20%"} sx={{ fontSize: "1.5rem" }} />
+          </div>
+          <div className="flex items-center justify-center max-w-full">
+            <Skeleton variant="rounded" width={"56rem"} height={"30rem"} />
+          </div>
+          <div className="flex flex-col lg:flex-row justify-between lg:space-x-8 max-lg:space-y-8">
+            <Skeleton variant="rounded" width={"100%"} height={"22rem"} />
+            <Skeleton variant="rounded" width={"100%"} height={"22rem"} />
+          </div>
+          <Skeleton variant="rounded" width={"100%"} height={"40rem"} />
+        </div>
+      </div>
+    );
+  }
 
   const handleInputChange = (e, setState, setSuggestions, data) => {
     const { value } = e.target;
@@ -147,28 +186,6 @@ export default function Games() {
     }
   };
 
-  const game = {
-    title: "Mafia: Definitive Edition",
-    company: "Hangar 13",
-    releaseDate: "2020-09-15",
-    imageUrl:
-      "https://firebasestorage.googleapis.com/v0/b/canyourunit-c1185.appspot.com/o/codmw.jpg?alt=media&token=08e0cbcb-6f74-44cb-b92e-9859721ba0c8",
-    minRequirements: {
-      os: "Windows 10",
-      cpu: "Intel Core i3-560 @ 3.33GHz",
-      ram: 6,
-      gpu: "GeForce GTX 460",
-      bit: 64,
-    },
-    recRequirements: {
-      os: "Windows 10",
-      cpu: "Intel Core i5-2500 @ 3.30GHz",
-      ram: 8,
-      gpu: "GeForce GTX 670",
-      bit: "64",
-    },
-  };
-
   const data = {
     labels: ["CPU", "GPU", "Ram"],
     datasets: [
@@ -233,24 +250,33 @@ export default function Games() {
     },
   };
 
+  const date = new Date(game.releaseDate);
+  const formattedDate = date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 text-white p-6">
       <div className={`${loading || timeoutStat ? "blur-sm" : "blur-0"} space-y-10`}>
         {/* Game Title and Release Information */}
         <div className="text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold tracking-wide">{game.title}</h1>
+          <h1 className="text-4xl lg:text-5xl font-bold tracking-wide">{game.gameName}</h1>
           <p className="text-gray-400 pt-2">
-            {game.company} - {game.releaseDate}
+            {game.company} - {formattedDate}
           </p>
         </div>
+
         {/* Game Cover Image */}
         <div className="flex justify-center">
           <img
-            src={game.imageUrl}
-            alt={`${game.title} Cover`}
+            src={game.imgUrl}
+            alt={`${game.gameName} Cover`}
             className="max-w-full lg:max-w-4xl rounded-xl object-cover shadow-lg"
           />
         </div>
+
         {/* System Requirements Sections */}
         <div className="flex flex-col lg:flex-row justify-between lg:space-x-8 max-lg:space-y-8">
           <section className="flex-1 bg-slate-700 p-6 rounded-lg shadow-lg border border-slate-600 hover:bg-slate-600 transition duration-300">
@@ -279,6 +305,7 @@ export default function Games() {
             </ul>
           </section>
         </div>
+
         {/* Comparison Section */}
         <div className="bg-gray-900 p-6 rounded-lg shadow-lg space-y-6">
           <h2 className="text-2xl lg:text-3xl font-bold text-center">

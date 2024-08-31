@@ -6,7 +6,6 @@ import Main from "./components/layout/Main";
 import HowItWorks from "./components/landing/HowItWorks";
 import Games from "./components/landing/Games";
 import CustomGame from "./components/landing/CustomGame";
-// import BatchWriteExample from "./bachwrite";
 
 function App() {
   return (
@@ -15,10 +14,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/games" element={<Games />} />
+          <Route path="/games/:id" element={<Games />} />
           <Route path="/howitworks" element={<HowItWorks />} />
-          <Route path="/CustomGame" element={<CustomGame />} />
-          {/* <Route path="/bachwrite" element={<BatchWriteExample />} /> */}
+          <Route path="/customGame" element={<CustomGame />} />
         </Routes>
         <Footer />
       </Router>

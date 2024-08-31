@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-export default function SearchBar() {
+export default function SearchBar({ onSearch }) {
   const [isFocused, setIsFocused] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleInputChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    onSearch(term);
+  };
 
   return (
     <div className="flex items-center w-full relative">
@@ -23,6 +30,8 @@ export default function SearchBar() {
         autoComplete="off"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        value={searchTerm}
+        onChange={handleInputChange}
       />
     </div>
   );
