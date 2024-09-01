@@ -5,6 +5,8 @@ import si from "systeminformation";
 import { config } from "dotenv";
 import gameRoutes from "./routes/gameRoutes.js";
 import cors from "cors";
+import osName from "os-name";
+
 config();
 
 const PORT = process.env.PORT || 3001;
@@ -40,17 +42,6 @@ async function gpuData() {
     return "Error retrieving GPU data";
   }
 }
-
-let osName;
-
-(async () => {
-  try {
-    const { default: osNameModule } = await import("os-name");
-    osName = osNameModule;
-  } catch (error) {
-    console.error("Error importing os-name module:", error);
-  }
-})();
 
 app.get("/api", async (req, res) => {
   try {
