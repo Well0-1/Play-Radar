@@ -29,19 +29,19 @@ export default function Main() {
           <div className="flex items-center justify-center max-lg:hidden pl-5">
             <Skeleton variant="rounded" width={"15rem"} height={"1.25rem"} />
           </div>
-          <div className="flex items-center max-lg:w-full w-2/5">
+          <div className="flex items-center max-lg:w-full w-2/5 pb-4">
             <Skeleton variant="rounded" width={"100%"} height={"3.5rem"} />
           </div>
         </div>
         <div className="sm:grid place-items-center grid-cols-4 gap-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:gap-0 text-white">
-          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
-          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
-          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
-          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
-          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
-          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
-          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
-          <Skeleton variant="rounded" width={"100%"} height={"15rem"} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} sx={{ marginY: "0.5rem" }} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} sx={{ marginY: "0.5rem" }} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} sx={{ marginY: "0.5rem" }} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} sx={{ marginY: "0.5rem" }} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} sx={{ marginY: "0.5rem" }} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} sx={{ marginY: "0.5rem" }} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} sx={{ marginY: "0.5rem" }} />
+          <Skeleton variant="rounded" width={"100%"} height={"15rem"} sx={{ marginY: "0.5rem" }} />
         </div>
       </div>
     );
