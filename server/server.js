@@ -78,3 +78,5 @@ app.get("/api", async (req, res) => {
 app.get("/test", (req, res) => {
   res.json({ test: "test" });
 });
+
+export default app;
