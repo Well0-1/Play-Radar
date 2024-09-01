@@ -27,7 +27,7 @@ mongoose
   )
   .catch((err) => console.error("Error connecting to MongoDB Atlas:", err));
 
-app.post("/system-info", (req, res) => {
+app.post("/api/system-info", (req, res) => {
   const sysInfo = req.body;
   console.log(sysInfo);
   res.status(200).json({ message: "System info received successfully " });
@@ -43,7 +43,7 @@ async function gpuData() {
   }
 }
 
-app.get("/api", async (req, res) => {
+app.get("/api/userSys", async (req, res) => {
   try {
     const userOs = osName();
     const bit = os.arch();
@@ -66,7 +66,7 @@ app.get("/api", async (req, res) => {
   }
 });
 
-app.get("/test", (req, res) => {
+app.get("/api/test", (req, res) => {
   res.json({ test: "test" });
 });
 

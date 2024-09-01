@@ -39,15 +39,15 @@ export default function Games() {
   const [issues, setIssues] = useState([]);
   const [conclusionStat, setConclusionStat] = useState(null);
   const [visible, setVisible] = useState(false);
+  const API = process.env.REACT_APP_API;
 
   const cpuInputRef = useRef(null);
   const gpuInputRef = useRef(null);
   const cpuSuggestionsRef = useRef(null);
   const gpuSuggestionsRef = useRef(null);
-
   useEffect(() => {
     axios
-      .get(`/api/game/${id}`)
+      .get(`${API}/game/${id}`)
       .then((res) => {
         setGame(res.data);
         setGameVerify(false);
@@ -128,7 +128,7 @@ export default function Games() {
   const handleAutoFill = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("/api");
+      const { data } = await axios.get(`${API}/userSys`);
       setCpuModel(data.cpuModel);
       setGpuModel(data.gpuModel);
       setRam(data.ramGB);

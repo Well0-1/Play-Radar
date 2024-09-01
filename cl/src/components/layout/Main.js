@@ -7,11 +7,12 @@ export default function Main() {
   const [games, setGames] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const API = process.env.REACT_APP_API;
 
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/games");
+        const res = await axios.get(`${API}/games`);
         setGames(res.data);
         setLoading(false);
       } catch (err) {
