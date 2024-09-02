@@ -47,7 +47,7 @@ export default function Games() {
   const gpuSuggestionsRef = useRef(null);
   useEffect(() => {
     axios
-      .get(`${API}/game/${id}`)
+      .get(`${API}/api/game/${id}`)
       .then((res) => {
         setGame(res.data);
         setGameVerify(false);
@@ -128,7 +128,7 @@ export default function Games() {
   const handleAutoFill = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(`${API}/userSys`);
+      const { data } = await axios.get(`${API}/api/userSys`);
       setCpuModel(data.cpuModel);
       setGpuModel(data.gpuModel);
       setRam(data.ramGB);

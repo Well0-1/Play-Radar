@@ -12,7 +12,7 @@ export default function Main() {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const res = await axios.get(`${API}/games`);
+        const res = await axios.get(`${API}/api/games`);
         setGames(res.data);
         setLoading(false);
       } catch (err) {
