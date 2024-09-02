@@ -4,7 +4,7 @@ import SearchBar from "../utils/SearchBar";
 import { Skeleton } from "@mui/material";
 
 export default function Main() {
-  const [games, setGames] = useState(null);
+  const [games, setGames] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const API = process.env.REACT_APP_API;
