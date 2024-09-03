@@ -20,7 +20,7 @@ export const validateSystem = (cpu, gpu, ram, os, bit, minCpu, minGpu, minRam, m
 
   const requiredFields = [cpu, gpu, ram, os, bit, minCpu, minGpu, minRam, minBit, minOs];
 
-  if (requiredFields.includes(undefined) || requiredFields.includes(null)) {
+  if (requiredFields.includes(null) || requiredFields.includes("")) {
     return ["You need to provide complete data entry."];
   }
 

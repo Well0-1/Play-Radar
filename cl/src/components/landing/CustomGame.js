@@ -46,6 +46,7 @@ export default function CustomGame() {
   const [conclusionStat, setConclusionStat] = useState(null);
   const [visible, setVisible] = useState(false);
   const [issues, setIssues] = useState([]);
+  const API = process.env.REACT_APP_API;
 
   // 😫
 
@@ -126,27 +127,27 @@ export default function CustomGame() {
     }
   };
 
-  const handleAutoFill = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get("/api");
-      setCpuModel(data.cpuModel);
-      setGpuModel(data.gpuModel);
-      setRam(data.ramGB);
-      setOs(data.userOs);
-      setLoading(false);
-      setBit(data.bit === "x64" || data.bit === "amd64" || data.bit === "x86_64" ? 64 : 32);
-    } catch (err) {
-      setTimeout(() => {
-        setLoading(false);
-        setTimeoutStat(true);
-      }, 2000);
-    }
-  };
+  // const handleAutoFill = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const { data } = await axios.get("/api");
+  //     setCpuModel(data.cpuModel);
+  //     setGpuModel(data.gpuModel);
+  //     setRam(data.ramGB);
+  //     setOs(data.userOs);
+  //     setLoading(false);
+  //     setBit(data.bit === "x64" || data.bit === "amd64" || data.bit === "x86_64" ? 64 : 32);
+  //   } catch (err) {
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //       setTimeoutStat(true);
+  //     }, 2000);
+  //   }
+  // };
 
   const sendSysInfo = async () => {
     try {
-      await axios.post("/system-info", {
+      await axios.post(`${API}/api/system-info`, {
         cpu: cpuModel,
         gpu: gpuModel,
         ram: ram,
@@ -652,12 +653,12 @@ export default function CustomGame() {
             >
               Submit
             </button>
-            <button
+            {/* <button
               className="bg-green-700 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300"
               onClick={handleAutoFill}
             >
               Auto-Fill
-            </button>
+            </button> */}
           </div>
         </div>
         <Conclusion
@@ -667,12 +668,12 @@ export default function CustomGame() {
           sysInfo={sendSysInfo}
         />
       </div>
-      <LoadingPopup
+      {/* <LoadingPopup
         visible={loading}
         timeout={timeoutStat}
         onClose={popupClose}
         onError={sendSysInfo}
-      />
+      /> */}
     </div>
   );
 }

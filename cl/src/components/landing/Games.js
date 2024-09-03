@@ -45,6 +45,7 @@ export default function Games() {
   const gpuInputRef = useRef(null);
   const cpuSuggestionsRef = useRef(null);
   const gpuSuggestionsRef = useRef(null);
+
   useEffect(() => {
     axios
       .get(`${API}/api/game/${id}`)
@@ -125,23 +126,23 @@ export default function Games() {
     }
   };
 
-  const handleAutoFill = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(`${API}/api/userSys`);
-      setCpuModel(data.cpuModel);
-      setGpuModel(data.gpuModel);
-      setRam(data.ramGB);
-      setOs(data.userOs);
-      setLoading(false);
-      setBit(data.bit === "x64" || data.bit === "amd64" || data.bit === "x86_64" ? 64 : 32);
-    } catch (err) {
-      setTimeout(() => {
-        setLoading(false);
-        setTimeoutStat(true);
-      }, 2000);
-    }
-  };
+  // const handleAutoFill = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const { data } = await axios.get(`${API}/api/userSys`);
+  //     setCpuModel(data.cpuModel);
+  //     setGpuModel(data.gpuModel);
+  //     setRam(data.ramGB);
+  //     setOs(data.userOs);
+  //     setLoading(false);
+  //     setBit(data.bit === "x64" || data.bit === "amd64" || data.bit === "x86_64" ? 64 : 32);
+  //   } catch (err) {
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //       setTimeoutStat(true);
+  //     }, 2000);
+  //   }
+  // };
 
   const checkSystem = () => {
     const res = validateSystem(
@@ -163,7 +164,7 @@ export default function Games() {
 
   const sendSysInfo = async () => {
     try {
-      await axios.post("/system-info", {
+      await axios.post(`${API}/api/system-info`, {
         cpu: cpuModel,
         gpu: gpuModel,
         ram: ram,
@@ -443,12 +444,12 @@ export default function Games() {
             >
               Submit
             </button>
-            <button
+            {/* <button
               onClick={handleAutoFill}
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-lg"
             >
               Auto-Fill
-            </button>
+            </button> */}
           </div>
         </div>
         <Conclusion
@@ -458,12 +459,12 @@ export default function Games() {
           sysInfo={sendSysInfo}
         />
       </div>
-      <LoadingPopup
+      {/* <LoadingPopup
         visible={loading}
         timeout={timeoutStat}
         onClose={popupClose}
         onError={sendSysInfo}
-      />
+      /> */}
     </div>
   );
 }
