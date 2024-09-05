@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="System data gathering page" />
+    <title>System Data Gathering</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div id="loading-screen" class="screen">
+      <div class="loading-content">
+        <div class="spinner"></div>
+        <h1>Gathering System Data...</h1>
+      </div>
+    </div>
+    <div id="completed-screen" class="screen hidden">
+      <div class="completed-content">
+        <div class="image">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              stroke-width="1.5"
+              stroke="#ffffff"
+              d="M20 7L9.00004 18L3.99994 13"
+            ></path>
+          </svg>
+        </div>
+        <h1>You're All Set!</h1>
+        <p>Your system data has been successfully gathered.</p>
+      </div>
+    </div>
+    <script>
+      setTimeout(() => {
+        document.getElementById("loading-screen").classList.add("hidden");
+        document.getElementById("completed-screen").classList.remove("hidden");
+      }, 5000);
+    </script>
+  </body>
+</html>

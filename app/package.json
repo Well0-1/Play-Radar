@@ -1,0 +1,22 @@
+{
+  "name": "electronisshit",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "electron": "^32.0.1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "os-name": "^6.0.0",
+    "systeminformation": "^5.23.5"
+  }
+}
