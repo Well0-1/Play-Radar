@@ -24,7 +24,7 @@ router.post("/add-game", authenticateToken, async (req, res) => {
   }
 });
 
-router.get("/games", async (req, res) => {
+router.get("/games", authenticateToken, async (req, res) => {
   try {
     const games = await Game.find();
     res.status(200).json(games);
