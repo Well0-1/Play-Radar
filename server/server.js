@@ -4,7 +4,7 @@ import { config } from "dotenv";
 import gameRoutes from "./routes/gameRoutes.js";
 import authenticateToken from "./middleware/authenticateToken.js";
 import cors from "cors";
--config();
+config();
 
 const PORT = process.env.PORT || 3001;
 
