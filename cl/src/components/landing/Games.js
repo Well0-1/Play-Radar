@@ -39,7 +39,9 @@ export default function Games() {
   const [issues, setIssues] = useState([]);
   const [conclusionStat, setConclusionStat] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [serverActive, setServerActive] = useState(false);
   const API = process.env.REACT_APP_API;
+  const token = process.env.REACT_APP_TOKEN;
 
   const cpuInputRef = useRef(null);
   const gpuInputRef = useRef(null);
@@ -48,7 +50,11 @@ export default function Games() {
 
   useEffect(() => {
     axios
-      .get(`${API}/api/game/${id}`)
+      .get(`${API}/api/game/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         setGame(res.data);
         setGameVerify(false);
@@ -57,6 +63,22 @@ export default function Games() {
         console.error("Games data is corrupted");
       });
   }, [id]);
+
+  useEffect(() => {
+    const storedSystemInfo = localStorage.getItem("userSystem");
+
+    if (storedSystemInfo) {
+      //pass
+    } else {
+      const interval = setInterval(() => {
+        if (!serverActive) {
+          checkServer();
+        }
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [serverActive]);
 
   if (gameVerify) {
     return (
@@ -78,6 +100,19 @@ export default function Games() {
       </div>
     );
   }
+
+  const checkServer = async () => {
+    try {
+      const response = await fetch("http://localhost:50000/system-info");
+
+      if (response.ok) {
+        const sysInfo = await response.json();
+        localStorage.setItem("userSystem", JSON.stringify(sysInfo));
+      }
+    } catch (error) {
+      setServerActive(false);
+    }
+  };
 
   const handleInputChange = (e, setState, setSuggestions, data) => {
     const { value } = e.target;
@@ -126,23 +161,27 @@ export default function Games() {
     }
   };
 
-  // const handleAutoFill = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const { data } = await axios.get(`${API}/api/userSys`);
-  //     setCpuModel(data.cpuModel);
-  //     setGpuModel(data.gpuModel);
-  //     setRam(data.ramGB);
-  //     setOs(data.userOs);
-  //     setLoading(false);
-  //     setBit(data.bit === "x64" || data.bit === "amd64" || data.bit === "x86_64" ? 64 : 32);
-  //   } catch (err) {
-  //     setTimeout(() => {
-  //       setLoading(false);
-  //       setTimeoutStat(true);
-  //     }, 2000);
-  //   }
-  // };
+  const autoFill = () => {
+    const data = JSON.parse(localStorage.getItem("userSystem"));
+    setCpuModel(data.cpu);
+    setGpuModel(data.gpu);
+    setRam(data.ram);
+    setOs(data.osVersion);
+    setBit(data.bit === "x64" || data.bit === "amd64" || data.bit === "x86_64" ? 64 : 32);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  };
+
+  const handleAutoFill = async () => {
+    setLoading(true);
+    if (localStorage.getItem("userSystem")) {
+      autoFill();
+    } else {
+      setTimeoutStat(true);
+    }
+    console.log(loading);
+  };
 
   const checkSystem = () => {
     const res = validateSystem(
@@ -164,13 +203,17 @@ export default function Games() {
 
   const sendSysInfo = async () => {
     try {
-      await axios.post(`${API}/api/system-info`, {
-        cpu: cpuModel,
-        gpu: gpuModel,
-        ram: ram,
-        os: os,
-        bit: bit,
-      });
+      await axios.post(
+        `${API}/api/system-info`,
+        {
+          cpu: cpuModel,
+          gpu: gpuModel,
+          ram: ram,
+          os: os,
+          bit: bit,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       alert("Successfuly Deployed");
       popupClose();
     } catch (err) {
@@ -444,12 +487,12 @@ export default function Games() {
             >
               Submit
             </button>
-            {/* <button
+            <button
               onClick={handleAutoFill}
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-lg"
             >
               Auto-Fill
-            </button> */}
+            </button>
           </div>
         </div>
         <Conclusion
@@ -459,12 +502,7 @@ export default function Games() {
           sysInfo={sendSysInfo}
         />
       </div>
-      {/* <LoadingPopup
-        visible={loading}
-        timeout={timeoutStat}
-        onClose={popupClose}
-        onError={sendSysInfo}
-      /> */}
+      <LoadingPopup visible={loading} timeout={timeoutStat} onClose={popupClose} />
     </div>
   );
 }

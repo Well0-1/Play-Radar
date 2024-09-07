@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import cpuData from "../data/cpu_data.json";
 import gpuData from "../data/gpu_data.json";
@@ -28,7 +28,7 @@ export default function CustomGame() {
   const [cpuSuggestions, setCpuSuggestions] = useState([]);
   const [gpuSuggestions, setGpuSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [timeoutStat, setTimeoutStat] = useState(false);
+  const [sysDataStat, setSysDataStat] = useState(false);
   const [minCpu, setMinCpu] = useState("");
   const [minGpu, setMinGpu] = useState("");
   const [minRam, setMinRam] = useState("");
@@ -46,8 +46,9 @@ export default function CustomGame() {
   const [conclusionStat, setConclusionStat] = useState(null);
   const [visible, setVisible] = useState(false);
   const [issues, setIssues] = useState([]);
+  const [serverActive, setServerActive] = useState(false);
   const API = process.env.REACT_APP_API;
-
+  const token = process.env.REACT_APP_TOKEN;
   // 😫
 
   const cpuInputRef = useRef(null);
@@ -62,6 +63,35 @@ export default function CustomGame() {
   const minGpuSuggestionsRef = useRef(null);
   const recCpuSuggestionsRef = useRef(null);
   const recGpuSuggestionsRef = useRef(null);
+
+  const checkServer = async () => {
+    try {
+      const response = await fetch("http://localhost:50000/system-info");
+
+      if (response.ok) {
+        const sysInfo = await response.json();
+        localStorage.setItem("userSystem", JSON.stringify(sysInfo));
+      }
+    } catch (error) {
+      setServerActive(false);
+    }
+  };
+
+  useEffect(() => {
+    const storedSystemInfo = localStorage.getItem("userSystem");
+
+    if (storedSystemInfo) {
+      //pass
+    } else {
+      const interval = setInterval(() => {
+        if (!serverActive) {
+          checkServer();
+        }
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }
+  }, [serverActive]);
 
   const handleInputChange = (e, setState, setSuggestions, data) => {
     const { value } = e.target;
@@ -127,33 +157,41 @@ export default function CustomGame() {
     }
   };
 
-  // const handleAutoFill = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const { data } = await axios.get("/api");
-  //     setCpuModel(data.cpuModel);
-  //     setGpuModel(data.gpuModel);
-  //     setRam(data.ramGB);
-  //     setOs(data.userOs);
-  //     setLoading(false);
-  //     setBit(data.bit === "x64" || data.bit === "amd64" || data.bit === "x86_64" ? 64 : 32);
-  //   } catch (err) {
-  //     setTimeout(() => {
-  //       setLoading(false);
-  //       setTimeoutStat(true);
-  //     }, 2000);
-  //   }
-  // };
+  const autoFill = () => {
+    const data = JSON.parse(localStorage.getItem("userSystem"));
+    setTimeout(() => {
+      setCpuModel(data.cpu);
+      setGpuModel(data.gpu);
+      setRam(data.ram);
+      setOs(data.osVersion);
+      setBit(data.bit === "x64" || data.bit === "amd64" || data.bit === "x86_64" ? 64 : 32);
+      setLoading(false);
+    }, 1000);
+  };
+
+  const handleAutoFill = () => {
+    setLoading(true);
+    if (localStorage.getItem("userSystem")) {
+      autoFill();
+    } else {
+      setLoading(false);
+      setSysDataStat(true);
+    }
+  };
 
   const sendSysInfo = async () => {
     try {
-      await axios.post(`${API}/api/system-info`, {
-        cpu: cpuModel,
-        gpu: gpuModel,
-        ram: ram,
-        os: os,
-        bit: bit,
-      });
+      await axios.post(
+        `${API}/api/system-info`,
+        {
+          cpu: cpuModel,
+          gpu: gpuModel,
+          ram: ram,
+          os: os,
+          bit: bit,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       alert("Successfully Deployed");
       popupClose();
     } catch (err) {
@@ -162,7 +200,7 @@ export default function CustomGame() {
   };
 
   const popupClose = () => {
-    setLoading(loading ? setLoading(false) : setTimeoutStat(false));
+    setLoading(loading ? setLoading(false) : setSysDataStat(false));
   };
 
   const checkSystem = () => {
@@ -266,7 +304,7 @@ export default function CustomGame() {
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 text-white p-6">
-      <div className={`${loading || timeoutStat ? "blur-sm" : "blur-0"} space-y-12`}>
+      <div className={`${loading || sysDataStat ? "blur-sm" : "blur-0"} space-y-12`}>
         <div className="text-center p-6 bg-gradient-to-r from-indigo-700 via-slate-700 to-pink-700 rounded-lg shadow-2xl space-y-6 opacity-70">
           <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-b from-indigo-400 via-slate-400 to-pink-700">
             {/*Color is Still debatable*/}
@@ -653,12 +691,12 @@ export default function CustomGame() {
             >
               Submit
             </button>
-            {/* <button
+            <button
               className="bg-green-700 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-colors duration-300"
               onClick={handleAutoFill}
             >
               Auto-Fill
-            </button> */}
+            </button>
           </div>
         </div>
         <Conclusion
@@ -668,12 +706,7 @@ export default function CustomGame() {
           sysInfo={sendSysInfo}
         />
       </div>
-      {/* <LoadingPopup
-        visible={loading}
-        timeout={timeoutStat}
-        onClose={popupClose}
-        onError={sendSysInfo}
-      /> */}
+      <LoadingPopup visible={loading} systemData={sysDataStat} onClose={popupClose} />
     </div>
   );
 }

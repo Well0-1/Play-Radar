@@ -8,11 +8,16 @@ export default function Main() {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const API = process.env.REACT_APP_API;
+  const token = process.env.REACT_APP_TOKEN;
 
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const res = await axios.get(`${API}/api/games`);
+        const res = await axios.get(`${API}/api/games`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setGames(res.data);
         setLoading(false);
       } catch (err) {
@@ -87,7 +92,7 @@ export default function Main() {
         </div>
       </div>
       <div className="sm:grid place-items-center grid-cols-4 gap-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:gap-0 text-white">
-        {filteredGames.length > 0 ? (
+        {/* {filteredGames.length > 0 ? (
           filteredGames.map((game) => (
             <GameCard
               key={game._id}
@@ -106,7 +111,16 @@ export default function Main() {
             gameName={"No worries! Click here to create your own game profile."}
             date={"2024"}
           />
-        )}
+        )} */}
+        <GameCard
+          href={"/customGame"}
+          imgSrc={
+            "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2358720/capsule_616x353.jpg?t=1724238313"
+          }
+          companyName={"Activision"}
+          gameName={"Game Name"}
+          date={"2000"}
+        />
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
 import express from "express";
 import Game from "../models/Game.js";
+import authenticateToken from "../middleware/authenticateToken.js";
 
 const router = express.Router();
 
-router.post("/add-game", async (req, res) => {
+router.post("/add-game", authenticateToken, async (req, res) => {
   const { imgUrl, gameName, company, releaseDate, minRequirements, recRequirements } = req.body;
 
   try {
@@ -23,7 +24,7 @@ router.post("/add-game", async (req, res) => {
   }
 });
 
-router.get("/games", async (req, res) => {
+router.get("/games", authenticateToken, async (req, res) => {
   try {
     const games = await Game.find();
     res.status(200).json(games);
@@ -32,7 +33,7 @@ router.get("/games", async (req, res) => {
   }
 });
 
-router.get("/game/:id", async (req, res) => {
+router.get("/game/:id", authenticateToken, async (req, res) => {
   try {
     const game = await Game.findById(req.params.id);
     if (!game) {
@@ -44,7 +45,7 @@ router.get("/game/:id", async (req, res) => {
   }
 });
 
-router.put("/game/:id", async (req, res) => {
+router.put("/game/:id", authenticateToken, async (req, res) => {
   const { imageUrl, gameName, company, releaseDate, minRequirements, recRequirements } = req.body;
 
   try {
@@ -64,7 +65,7 @@ router.put("/game/:id", async (req, res) => {
   }
 });
 
-router.delete("/game/:id", async (req, res) => {
+router.delete("/game/:id", authenticateToken, async (req, res) => {
   try {
     const deletedGame = await Game.findByIdAndDelete(req.params.id);
     if (!deletedGame) {

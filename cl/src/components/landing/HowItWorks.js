@@ -46,21 +46,28 @@ export default function HowItWorks() {
             Gathering System Information
           </h2>
           <p className="mt-4 text-gray-300">
-            We collect information about your computer's components, such as your GPU, CPU, and RAM,
-            to assess its capabilities.
+            We collect your system's information through an application created by us, but how does
+            this application work?
           </p>
         </div>
         <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
           <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
-            {`// This is how we gather your system information
-app.get("/api", async (req, res) => {
-  try ({
-    const cpuModel = cpuModels[0];
-    const gpuModel = await gpuData();
-    ...
-    res.json({
-    //Send JSON data to the client
+            {`// This endpoint serves the system information collected by our application.
+// We host a local server that exposes this endpoint, which can only be accessed from your local network.
+// This means your data is not accessible from the internet and remains secure.
+
+expressApp.get("/system-info", async (req, res) => {
+  try {
+    const systemInfo = await getSystemInfo(); // This function gathers system information
+    res.json(systemInfo);
 });
+
+// Start the server on port 50000. This server is intended to run locally on your machine,
+// ensuring that your system information is securely handled and not exposed to the wider internet.
+const server = expressApp.listen(50000, () => {
+});
+
+// And we save this data to localstorage so you wont have to run our application again and again
 `}
           </pre>
         </div>
@@ -131,11 +138,22 @@ app.post("/system-info", (req, res) => {
           <div className="space-y-10 w-9/12 lg:w-full flex flex-col bg-gray-900 hover:bg-slate-800 p-4 rounded-lg duration-300">
             <div className="mt-4 text-gray-300 space-y-4">
               <p>
-                <strong>Q:</strong> How does the system collect my information?
+                <strong>Q:</strong> Is the app safe?
               </p>
+              <p className="w-1/2">
+                <strong>A:</strong> Our application runs a local server on your machine that listens
+                for requests. This server is only accessible from your local network, so your data
+                stays private and is not accessible from outside.
+              </p>
+            </div>{" "}
+            <div className="mt-4 text-gray-300 space-y-4">
               <p>
-                <strong>A:</strong> We securely gather and process your system data using
-                industry-standard methods.
+                <strong>Q:</strong> How does the system collect my information ?
+              </p>
+              <p className="w-1/2">
+                <strong>A:</strong> It uses specific tools to collect details from your computer,
+                and sends details to its own server, and our web page receives and processes this
+                data while the server is running.
               </p>
             </div>
             <div className="mt-4 text-gray-300 space-y-4">
