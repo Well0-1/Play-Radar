@@ -4,6 +4,12 @@ const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
+  if (req.method === "POST" || req.method === "PUT" || req.method === "DELETE") {
+    if (!token || token !== process.env.ADMIN_TOKEN) {
+      return res.status(403).json({ message: "Unauthorized Entry: Notifying Admin" });
+    }
+  }
+
   if (!token) {
     return res.status(401).json({ message: "Unauthorized: No token provided" });
   }

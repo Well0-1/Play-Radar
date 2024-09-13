@@ -1,18 +1,47 @@
 {
-  "name": "electronisshit",
+  "name": "play-radar",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder -mwl"
+  },
+  "build": {
+    "appId": "com.playradar.app",
+    "mac": {
+      "category": "public.app-category.reference",
+      "icon": "./mac.icns"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "./win.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "./lnx.png"
+    }
   },
   "keywords": [],
-  "author": "",
+  "author": "Salih Akyüzoğlu",
   "license": "ISC",
-  "description": "",
+  "description": "Simple application that collects system information and posts it to localhost",
   "devDependencies": {
-    "electron": "^32.0.1"
+    "electron": "^32.0.1",
+    "electron-builder": "^25.0.5"
   },
   "dependencies": {
     "cors": "^2.8.5",

@@ -35,7 +35,7 @@ export default function Games() {
   const [gpuSuggestions, setGpuSuggestions] = useState([]);
   const [suggestionIndex, setSuggestionIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
-  const [timeoutStat, setTimeoutStat] = useState(false);
+  const [sysDataStat, setSysDataStat] = useState(false);
   const [issues, setIssues] = useState([]);
   const [conclusionStat, setConclusionStat] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -47,6 +47,20 @@ export default function Games() {
   const gpuInputRef = useRef(null);
   const cpuSuggestionsRef = useRef(null);
   const gpuSuggestionsRef = useRef(null);
+
+  const checkServer = async () => {
+    try {
+      const response = await fetch("http://localhost:50000/system-info");
+
+      if (response.ok) {
+        const sysInfo = await response.json();
+        localStorage.setItem("userSystem", JSON.stringify(sysInfo));
+        setServerActive(true);
+      }
+    } catch (error) {
+      setServerActive(false);
+    }
+  };
 
   useEffect(() => {
     axios
@@ -62,7 +76,7 @@ export default function Games() {
       .catch((err) => {
         console.error("Games data is corrupted");
       });
-  }, [id]);
+  }, [id, API, token]);
 
   useEffect(() => {
     const storedSystemInfo = localStorage.getItem("userSystem");
@@ -100,19 +114,6 @@ export default function Games() {
       </div>
     );
   }
-
-  const checkServer = async () => {
-    try {
-      const response = await fetch("http://localhost:50000/system-info");
-
-      if (response.ok) {
-        const sysInfo = await response.json();
-        localStorage.setItem("userSystem", JSON.stringify(sysInfo));
-      }
-    } catch (error) {
-      setServerActive(false);
-    }
-  };
 
   const handleInputChange = (e, setState, setSuggestions, data) => {
     const { value } = e.target;
@@ -178,9 +179,9 @@ export default function Games() {
     if (localStorage.getItem("userSystem")) {
       autoFill();
     } else {
-      setTimeoutStat(true);
+      setLoading(false);
+      setSysDataStat(true);
     }
-    console.log(loading);
   };
 
   const checkSystem = () => {
@@ -223,11 +224,7 @@ export default function Games() {
   };
 
   const popupClose = () => {
-    if (loading) {
-      setLoading(false);
-    } else {
-      setTimeoutStat(false);
-    }
+    setLoading(loading ? setLoading(false) : setSysDataStat(false));
   };
 
   const data = {
@@ -303,7 +300,7 @@ export default function Games() {
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 text-white p-6">
-      <div className={`${loading || timeoutStat ? "blur-sm" : "blur-0"} space-y-10`}>
+      <div className={`${loading || sysDataStat ? "blur-sm" : "blur-0"} space-y-10`}>
         {/* Game Title and Release Information */}
         <div className="text-center">
           <h1 className="text-4xl lg:text-5xl font-bold tracking-wide">{game.gameName}</h1>
@@ -502,7 +499,7 @@ export default function Games() {
           sysInfo={sendSysInfo}
         />
       </div>
-      <LoadingPopup visible={loading} timeout={timeoutStat} onClose={popupClose} />
+      <LoadingPopup visible={loading} systemData={sysDataStat} onClose={popupClose} />
     </div>
   );
 }

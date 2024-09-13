@@ -2,7 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import { config } from "dotenv";
 import gameRoutes from "./routes/gameRoutes.js";
-import authenticateToken from "./middleware/authenticateToken.js";
 import cors from "cors";
 config();
 
@@ -24,7 +23,7 @@ mongoose
   )
   .catch((err) => console.error("Error connecting to MongoDB Atlas:", err));
 
-app.post("/api/system-info", authenticateToken, (req, res) => {
+app.post("/api/system-info", (req, res) => {
   const sysInfo = req.body;
 
   if (!sysInfo.cpu || !sysInfo.gpu || !sysInfo.ram || !sysInfo.os || !sysInfo.bit) {

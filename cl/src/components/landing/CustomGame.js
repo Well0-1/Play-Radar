@@ -71,6 +71,7 @@ export default function CustomGame() {
       if (response.ok) {
         const sysInfo = await response.json();
         localStorage.setItem("userSystem", JSON.stringify(sysInfo));
+        setServerActive(true);
       }
     } catch (error) {
       setServerActive(false);
@@ -81,7 +82,7 @@ export default function CustomGame() {
     const storedSystemInfo = localStorage.getItem("userSystem");
 
     if (storedSystemInfo) {
-      //pass
+      // pass
     } else {
       const interval = setInterval(() => {
         if (!serverActive) {

@@ -7,7 +7,7 @@ export default function Footer() {
   const email = "sakyuzogluh";
   const domain = "gmail.com";
   return (
-    <div className="flex border-t justify-center p-8 w-full z-10 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
+    <div className="flex border-t border-slate-700 justify-center p-8 w-full z-10 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
       <div className="flex flex-col w-full justify-between">
         <div className="grid grid-cols-12 lg:space-y-0 space-y-8 max-lg:flex max-lg:flex-col max-lg:items-center">
           <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -41,7 +41,7 @@ export default function Footer() {
               </a>
             </div>
           </div>
-          <div className="w-full lg:col-span-6 flex flex-row justify-between max-lg:space-x-12 text-white">
+          <div className="w-full lg:col-span-6 flex flex-row justify-between max-lg:space-x-12 text-white text-sm">
             <div className="flex flex-col space-y-2">
               <h1 className="text-xl font-semibold text-slate-300">Topic</h1>
               <a
