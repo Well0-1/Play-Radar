@@ -27,7 +27,7 @@ export default function Footer() {
                 <FontAwesomeIcon icon={faGithub} size="xl" />
               </a>
               <a
-                href="https://www.linkedin.com"
+                href="https://www.linkedin.com/in/salih-aky%C3%BCzo%C4%9Flu-352359295/"
                 rel="noopener noreferrer"
                 className="p-2 hover:text-slate-400 transition-colors duration-200"
               >
