@@ -17,7 +17,7 @@ export default function Footer() {
             >
               Play-Radar
             </a>
-            <div className="flex flex-row justify-center lg:justify-start space-x-6 pt-4">
+            <div className="flex flex-row text-white justify-center lg:justify-start space-x-6 pt-4">
               <a
                 href="https://www.github.com/Well0-1"
                 target="_blank"
