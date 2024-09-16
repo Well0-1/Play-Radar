@@ -54,7 +54,7 @@ export default function Main() {
   }
 
   const GameCard = ({ href, imgSrc, companyName, gameName, date }) => (
-    <a className="p-1" href={href}>
+    <a className="sm:p-1" href={href}>
       <div className="h-full w-full flex border border-gray-700 relative rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-600">
         <div className="w-full h-full lg:aspect-video aspect-square">
           <img className="object-cover object-center w-full h-full" src={imgSrc} alt={gameName} />
@@ -83,7 +83,7 @@ export default function Main() {
 
   return (
     <div className="w-full min-h-screen relative flex flex-col max-2xl:pb-4 2xl:p-[2%] bg-gradient-to-b from-slate-800 to-slate-900">
-      <div className="w-full flex lg:justify-between lg:p-4">
+      <div className="w-full flex lg:justify-between lg:p-4 pb-4">
         <div className="flex items-center justify-center max-lg:hidden pl-5">
           <strong className="text-xl text-white font-cairo">Popular Games</strong>
         </div>
