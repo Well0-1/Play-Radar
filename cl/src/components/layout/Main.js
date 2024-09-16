@@ -82,7 +82,7 @@ export default function Main() {
   };
 
   return (
-    <div className="w-full min-h-screen relative flex flex-col max-2xl:p-4 2xl:p-[2%] bg-gradient-to-b from-slate-800 to-slate-900">
+    <div className="w-full min-h-screen relative flex flex-col max-2xl:pb-4 2xl:p-[2%] bg-gradient-to-b from-slate-800 to-slate-900">
       <div className="w-full flex lg:justify-between lg:p-4">
         <div className="flex items-center justify-center max-lg:hidden pl-5">
           <strong className="text-xl text-white font-cairo">Popular Games</strong>
@@ -91,7 +91,7 @@ export default function Main() {
           <SearchBar onSearch={handleSearch} />
         </div>
       </div>
-      <div className="sm:grid place-items-center grid-cols-4 gap-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:gap-0 text-white">
+      <div className="sm:grid place-items-center grid-cols-4 max-2xl:px-4 gap-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:gap-0 text-white">
         {filteredGames.length > 0 ? (
           filteredGames.map((game) => (
             <GameCard
