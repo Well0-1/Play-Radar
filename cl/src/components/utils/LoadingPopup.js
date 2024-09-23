@@ -58,7 +58,7 @@ export default function LoadingPopUp({ visible, systemData, onClose }) {
           <div className="flex justify-between w-full space-x-4 lg:text-base text-xs">
             <a
               className="bg-blue-600 hover:bg-blue-700 text-center transition-all duration-300 ease-in-out text-white w-full lg:p-4 p-3 rounded-lg shadow-xl font-semibold"
-              href="https://www.mediafire.com/file/ohu0dreihvjjvt4/playRadar-x64.rar/file"
+              href="https://www.mediafire.com/file/613q5bzhb45gbfk/playRadar-x64.rar/file"
               target="_blank"
               rel="noopener noreferrer"
             >

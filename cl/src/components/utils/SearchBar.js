@@ -13,7 +13,7 @@ export default function SearchBar({ onSearch }) {
   };
 
   return (
-    <div className="flex items-center w-full relative">
+    <div className="flex px-2 pt-3 items-center w-full relative">
       <label
         htmlFor="search"
         className={`p-4 absolute transition-colors duration-500 ${
