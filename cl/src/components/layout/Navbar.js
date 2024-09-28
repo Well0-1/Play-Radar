@@ -22,7 +22,7 @@ export default function Navbar() {
             How It Works?
           </a>
           <a
-            href="https://www.github.com/Well0-1"
+            href="https://github.com/Well0-1/Play-Radar"
             target="_blank"
             rel="noopener noreferrer"
             className="text-white p-2 hover:text-slate-400 transition-colors duration-200"

@@ -6,6 +6,7 @@ import Main from "./components/layout/Main";
 import HowItWorks from "./components/landing/HowItWorks";
 import Games from "./components/landing/Games";
 import CustomGame from "./components/landing/CustomGame";
+import Contact from "./components/landing/Contact";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/games/:id" element={<Games />} />
           <Route path="/howitworks" element={<HowItWorks />} />
           <Route path="/customGame" element={<CustomGame />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
         <Footer />
       </Router>

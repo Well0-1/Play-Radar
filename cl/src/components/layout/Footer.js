@@ -4,10 +4,10 @@ import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 export default function Footer() {
-  const email = "sakyuzogluh";
+  const email = "sakyuzo.c";
   const domain = "gmail.com";
   return (
-    <div className="flex border-t border-slate-700 justify-center p-8 w-full z-10 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
+    <div className="flex border-t border-slate-700 justify-center p-2 sm:p-6 w-full z-10 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
       <div className="flex flex-col w-full justify-between">
         <div className="grid grid-cols-12 lg:space-y-0 space-y-8 max-lg:flex max-lg:flex-col max-lg:items-center">
           <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -19,7 +19,7 @@ export default function Footer() {
             </a>
             <div className="flex flex-row text-white justify-center lg:justify-start space-x-6 pt-4">
               <a
-                href="https://www.github.com/Well0-1"
+                href="https://www.github.com/Well0-1/Play-Radar"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 hover:text-slate-400 transition-colors duration-200"
@@ -41,50 +41,62 @@ export default function Footer() {
               </a>
             </div>
           </div>
-          <div className="w-full lg:col-span-6 flex flex-row justify-between max-lg:space-x-12 text-white text-sm">
+          <div className="w-full lg:col-span-6 flex flex-row justify-between text-nowrap max-lg:space-x-4 text-white text-[0.65rem] p-0 sm:text-xs md:text-sm">
             <div className="flex flex-col space-y-2">
-              <h1 className="text-xl font-semibold text-slate-300">Topic</h1>
+              <h1 className="sm:text-xl text-base font-semibold text-slate-300">Discover</h1>
               <a
-                href="https://www.github.com/Well0-1"
+                href="https://www.store.steampowered.com/explore/new/"
                 className="hover:text-slate-400 transition-colors duration-200"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Subtitle 1
+                Latest Releases
               </a>
               <a
-                href="https://www.github.com/Well0-1"
+                href="https://www.store.steampowered.com/search/?filter=popular"
                 className="hover:text-slate-400 transition-colors duration-200"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Subtitle 2
+                Trending Games
               </a>
             </div>
             <div className="flex flex-col space-y-2">
-              <h1 className="text-xl font-semibold text-slate-300">Topic</h1>
+              <h1 className="sm:text-xl text-base font-semibold text-slate-300">Community</h1>
               <a
-                href="https://www.github.com/Well0-1"
+                href="https://www.steamcommunity.com/?subsection=reviews"
                 className="hover:text-slate-400 transition-colors duration-200"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Subtitle 1
+                Player Reviews
               </a>
               <a
-                href="https://www.github.com/Well0-1"
+                href="https://www.steamcommunity.com/discussions/"
                 className="hover:text-slate-400 transition-colors duration-200"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Subtitle 2
+                Game Forums
               </a>
             </div>
             <div className="flex flex-col space-y-2">
-              <h1 className="text-xl font-semibold text-slate-300">Topic</h1>
+              <h1 className="sm:text-xl text-base font-semibold text-slate-300">Resources</h1>
               <a
-                href="https://www.github.com/Well0-1"
+                href="https://www.ign.com/wikis/"
                 className="hover:text-slate-400 transition-colors duration-200"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Subtitle 1
+                Game Guides
               </a>
               <a
-                href="https://www.github.com/Well0-1"
+                href="/contact"
                 className="hover:text-slate-400 transition-colors duration-200"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Subtitle 2
+                Contact Us
               </a>
             </div>
           </div>
