@@ -45,7 +45,7 @@ export default function Footer() {
             <div className="flex flex-col space-y-2">
               <h1 className="sm:text-xl text-base font-semibold text-slate-300">Discover</h1>
               <a
-                href="https://www.store.steampowered.com/explore/new/"
+                href="https://store.steampowered.com/explore/new/"
                 className="hover:text-slate-400 transition-colors duration-200"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -53,7 +53,7 @@ export default function Footer() {
                 Latest Releases
               </a>
               <a
-                href="https://www.store.steampowered.com/search/?filter=popular"
+                href="https://store.steampowered.com/search/?filter=popular"
                 className="hover:text-slate-400 transition-colors duration-200"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -64,7 +64,7 @@ export default function Footer() {
             <div className="flex flex-col space-y-2">
               <h1 className="sm:text-xl text-base font-semibold text-slate-300">Community</h1>
               <a
-                href="https://www.steamcommunity.com/?subsection=reviews"
+                href="https://steamcommunity.com/?subsection=reviews"
                 className="hover:text-slate-400 transition-colors duration-200"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -72,7 +72,7 @@ export default function Footer() {
                 Player Reviews
               </a>
               <a
-                href="https://www.steamcommunity.com/discussions/"
+                href="https://steamcommunity.com/discussions/"
                 className="hover:text-slate-400 transition-colors duration-200"
                 target="_blank"
                 rel="noopener noreferrer"
