@@ -1,23 +1,25 @@
 export const normalizeModelName = (model) => {
   if (!model) return "";
 
-  if (model.includes("Intel")) {
+  model = model.toLowerCase();
+
+  if (model.includes("intel")) {
     return model
       .replace(
-        /^(12th Gen|13th Gen|14th Gen|11th Gen|10th Gen|9th Gen|8th Gen|7th Gen|6th Gen|5th Gen|4th Gen|3rd Gen|2nd Gen|1st Gen) /,
+        /^(12th gen|13th gen|14th gen|11th gen|10th gen|9th gen|8th gen|7th gen|6th gen|5th gen|4th gen|3rd gen|2nd gen|1st gen) /,
         ""
       )
-      .replace(/\(R\)|\(TM\)|Graphics|@/g, "")
+      .replace(/\(r\)|\(tm\)|graphics|@/g, "")
       .trim()
       .replace(/\s+/g, " ");
-  } else if (model.includes("AMD")) {
+  } else if (model.includes("amd")) {
     return model
-      .replace(/\(R\)|\(TM\)|Graphics|@/g, "")
+      .replace(/\(r\)|\(tm\)|graphics|@/g, "")
       .trim()
       .replace(/\s+/g, " ");
   } else {
     return model
-      .replace(/\(R\)|\(TM\)|Graphics|NVIDIA/g, "")
+      .replace(/\(r\)|\(tm\)|graphics|nvidia/g, "")
       .trim()
       .replace(/\s+/g, " ");
   }
