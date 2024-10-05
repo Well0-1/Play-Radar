@@ -1,40 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLaptopCode, faCog, faServer, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLaptopCode,
+  faCog,
+  faServer,
+  faQuestionCircle,
+  faChevronDown,
+  faChevronUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function HowItWorks() {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggleAccordion = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  const faqs = [
+    {
+      question: "Is the app safe?",
+      answer:
+        "Yes, the app runs a local server on your machine. This means your data is only accessible within your own network, ensuring privacy.",
+    },
+    {
+      question: "How does the system collect my information?",
+      answer:
+        "It uses specific tools to collect details from your computer, and sends details to its own server, and our web page receives and processes this data while the server is running.",
+    },
+    {
+      question: "Can I see the source code?",
+      answer: (
+        <>
+          Sure! Check it out on{" "}
+          <a
+            href="https://github.com/Well0-1/Play-Radar"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:text-blue-300 transition-colors duration-300"
+          >
+            GitHub
+          </a>
+          .
+        </>
+      ),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-700 to-slate-900 text-white p-4 sm:p-8">
-      {/* Section. Introduction */}
-      <section className="w-full text-center py-8 space-y-8">
-        <h1 className="text-3xl font-bold text-white">
-          Play Radar - Your Ultimate Game Compatibility Guide
-        </h1>
-        <p className="text-lg text-gray-300">
-          <strong>Play Radar</strong> is a platform designed to help gamers assess the compatibility
-          of their system with various video games. Our goal is to provide a comprehensive and
-          user-friendly experience, enabling users to understand their hardware's capabilities and
-          how well they can run specific games.
-        </p>
-
-        {/* Section: What is Play Radar*/}
-        <div className="pt-6 text-center">
-          <h2 className="text-3xl font-bold text-white">🎮 What is Play Radar?</h2>
-          <p className="pt-4 text-lg text-gray-300">
-            Play Radar is a web application that gathers system information from your computer, such
-            as CPU, GPU, RAM details. It then compares these specifications against the minimum and
-            recommended requirements of popular games, providing an instant compatibility analysis.
-            Whether you're looking to check if your current setup can handle the latest games or
-            planning to upgrade your system, Play Radar has you covered!
-          </p>
-        </div>
-      </section>
-
       {/* Section: How It Works */}
       <header className="w-full text-center py-8">
         <h1 className="text-3xl font-bold text-white">How it Works</h1>
         <p className="mt-4 text-lg text-gray-300">
-          Learn how our system gathers and processes your computer's information.
+          Here's a quick overview of how Play Radar works.
         </p>
       </header>
 
@@ -46,29 +64,28 @@ export default function HowItWorks() {
             Gathering System Information
           </h2>
           <p className="mt-4 text-gray-300">
-            We collect your system's information through an application created by us, but how does
-            this application work?
+            Play Radar collects your system's details and helps you check if your computer can run
+            specific games.
           </p>
         </div>
         <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
           <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
-            {`// This endpoint serves the system information collected by our application.
-// We host a local server that exposes this endpoint, which can only be accessed from your local network.
-// This means your data is not accessible from the internet and remains secure.
+            {`// Serve system information via a local endpoint
+// Which can only be accessed from your local network
 
 expressApp.get("/system-info", async (req, res) => {
   try {
-    const systemInfo = await getSystemInfo(); // This function gathers system information
+    const systemInfo = await getSystemInfo(); // Gathers system information
     res.json(systemInfo);
+  }
 });
 
-// Start the server on port 50000. This server is intended to run locally on your machine,
-// ensuring that your system information is securely handled and not exposed to the wider internet.
+// Start the server on port 50000 for local use only
 const server = expressApp.listen(50000, () => {
+  console.log("Server running on port 50000");
 });
 
-// And we save this data to localstorage so you wont have to run our application again and again
-`}
+// Data is saved to local storage to avoid repeated application runs`}
           </pre>
         </div>
       </section>
@@ -81,8 +98,8 @@ const server = expressApp.listen(50000, () => {
             Processing and Displaying Data
           </h2>
           <p className="mt-4 text-gray-300">
-            After gathering your system's data, we analyze it to determine how well your hardware
-            can run specific games.
+            After gathering your system’s details, we analyze them to check compatibility with
+            various games.
           </p>
         </div>
         <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
@@ -104,8 +121,7 @@ const userCpuScore = getBenchmarkScore(cpuModel, cpuData);
             Server and API
           </h2>
           <p className="mt-4 text-gray-300">
-            Our backend uses Express to manage system information and provides APIs for data
-            processing.
+            We use secure servers to manage and process the information your system provides.
           </p>
         </div>
         <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
@@ -123,57 +139,41 @@ app.post("/system-info", (req, res) => {
       <section className="py-8 text-center">
         <h2 className="text-2xl font-bold text-white">Conclusion</h2>
         <p className="mt-4 text-gray-300">
-          Our platform provides a comprehensive overview of how well your system can run various
-          games.
+          Play Radar makes it easy to ensure your system is always ready for the latest games.
         </p>
       </section>
 
       {/* Section: Frequently Asked Questions */}
       <section className="py-8 space-y-6">
-        <h2 className="text-2xl font-bold text-white lg:text-start text-center">
+        <h2 className="text-3xl font-bold text-white text-center lg:text-start">
           <FontAwesomeIcon icon={faQuestionCircle} className="mr-2" />
           Frequently Asked Questions
         </h2>
-        <div className="w-full flex justify-center">
-          <div className="space-y-10 w-9/12 lg:w-full flex flex-col bg-gray-900 hover:bg-slate-800 p-4 rounded-lg duration-300">
-            <div className="mt-4 text-gray-300 space-y-4">
-              <p>
-                <strong>Q:</strong> Is the app safe?
-              </p>
-              <p className="w-1/2">
-                <strong>A:</strong> Our application runs a local server on your machine that listens
-                for requests. This server is only accessible from your local network, so your data
-                stays private and is not accessible from outside.
-              </p>
-            </div>{" "}
-            <div className="mt-4 text-gray-300 space-y-4">
-              <p>
-                <strong>Q:</strong> How does the system collect my information ?
-              </p>
-              <p className="w-1/2">
-                <strong>A:</strong> It uses specific tools to collect details from your computer,
-                and sends details to its own server, and our web page receives and processes this
-                data while the server is running.
-              </p>
+
+        <div className="flex flex-col justify-center lg:justify-start gap-6">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              className={`w-full bg-gray-800 p-4 rounded-lg shadow-md border border-gray-700 transition-all duration-300 ${
+                openIndex === index ? "bg-slate-700" : ""
+              }`}
+            >
+              <button
+                className="w-full flex justify-between items-center text-left text-lg text-gray-300 font-semibold py-4 focus:outline-none hover:text-gray-400 transition-colors duration-300"
+                onClick={() => toggleAccordion(index)}
+              >
+                <span>{faq.question}</span>
+                <FontAwesomeIcon icon={openIndex === index ? faChevronUp : faChevronDown} />
+              </button>
+              <div
+                className={`overflow-hidden border-t border-gray-500 transition-all duration-500 ease-in-out ${
+                  openIndex === index ? "max-h-96 opacity-100 pt-4" : "max-h-0 opacity-0"
+                }`}
+              >
+                <p className="text-white">{faq.answer}</p>
+              </div>
             </div>
-            <div className="mt-4 text-gray-300 space-y-4">
-              <p>
-                <strong>Q:</strong> Can I see the source code?
-              </p>
-              <p>
-                <strong>A:</strong> Absolutely! You can view it on{" "}
-                <a
-                  href="https://github.com/Well0-1/Play-Radar"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-slate-500 hover:text-blue-200 transition-colors duration-300"
-                >
-                  GitHub
-                </a>
-                .
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
     </div>

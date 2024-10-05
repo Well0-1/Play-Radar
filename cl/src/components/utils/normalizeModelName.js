@@ -9,12 +9,13 @@ export const normalizeModelName = (model) => {
         /^(12th gen|13th gen|14th gen|11th gen|10th gen|9th gen|8th gen|7th gen|6th gen|5th gen|4th gen|3rd gen|2nd gen|1st gen) /,
         ""
       )
-      .replace(/\(r\)|\(tm\)|graphics|@/g, "")
+      .replace(/\(r\)|\(tm\)|graphics|@|cpu/g, "")
+      .replace(/\d+(\.\d+)?\s*ghz/g, "")
       .trim()
       .replace(/\s+/g, " ");
   } else if (model.includes("amd")) {
     return model
-      .replace(/\(r\)|\(tm\)|graphics|@/g, "")
+      .replace(/\(r\)|\(tm\)|graphics|@|cpu/g, "")
       .trim()
       .replace(/\s+/g, " ");
   } else {

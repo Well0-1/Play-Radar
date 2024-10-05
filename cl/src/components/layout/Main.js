@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SearchBar from "../utils/SearchBar";
 import { Skeleton } from "@mui/material";
+import Guide from "../utils/Guide";
 
 export default function Main() {
   const [games, setGames] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showGuide, setShowGuide] = useState(false);
   const API = process.env.REACT_APP_API;
   const token = process.env.REACT_APP_TOKEN;
 
@@ -25,8 +27,13 @@ export default function Main() {
       }
     };
 
+    if (!localStorage.getItem("showGuide")) {
+      setShowGuide(true);
+      localStorage.setItem("showGuide", "true");
+    }
+
     fetchGames();
-  }, []);
+  }, [API, token]);
 
   if (loading) {
     return (
@@ -113,6 +120,7 @@ export default function Main() {
           />
         )}
       </div>
+      <Guide first={showGuide} />
     </div>
   );
 }
