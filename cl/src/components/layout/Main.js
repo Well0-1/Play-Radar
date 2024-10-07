@@ -13,6 +13,10 @@ export default function Main() {
   const token = process.env.REACT_APP_TOKEN;
 
   useEffect(() => {
+    if (!localStorage.getItem("showGuide")) {
+      setShowGuide(true);
+    }
+
     const fetchGames = async () => {
       try {
         const res = await axios.get(`${API}/api/games`, {
@@ -26,11 +30,6 @@ export default function Main() {
         console.error("Error fetching games:", err);
       }
     };
-
-    if (!localStorage.getItem("showGuide")) {
-      setShowGuide(true);
-      localStorage.setItem("showGuide", "true");
-    }
 
     fetchGames();
   }, [API, token]);

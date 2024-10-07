@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGamepad, faCheckCircle, faSyncAlt, faSmile } from "@fortawesome/free-solid-svg-icons";
+import { faGamepad, faCheckCircle, faSmile, faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 export default function Guide({ first }) {
   const [step, setStep] = useState(0);
@@ -10,31 +10,32 @@ export default function Guide({ first }) {
     {
       title: "Welcome to Play Radar!",
       description:
-        "Play Radar helps you check if your system can run games. We'll guide you step by step!",
+        "Your gateway to finding games that run perfectly on your system. Let us guide you to an optimized gaming experience.",
       icon: faGamepad,
     },
     {
-      title: "Check Compatibility",
+      title: "System Compatibility Check",
       description:
-        "We gather info about your system with our app and compare it with game requirements. Easy and fast!",
+        "Quickly assess your system's specifications with our app and match them against game requirements. Seamless and accurate!",
       icon: faCheckCircle,
     },
     {
-      title: "Stay Updated",
+      title: "Game On!",
       description:
-        "Keep track of new games and get updates. We'll also suggest upgrades if needed!",
-      icon: faSyncAlt,
+        "Get personalized game suggestions that match your system’s capabilities and stay up to date with the latest releases.",
+      icon: faTrophy,
     },
     {
-      title: "Enjoy the Experience!",
+      title: "Now You're Ready!",
       description:
-        "Now you're ready! Search for games and make sure your system is always good to go!",
+        "Start exploring, search for games with peace of mind, knowing your system is optimized for the best performance. Play without limits!",
       icon: faSmile,
     },
   ];
 
   const handleClick = (index) => {
     if (index === steps.length - 1) {
+      localStorage.setItem("showGuide", "true");
       setVisible(false);
     } else {
       setStep(index + 1);

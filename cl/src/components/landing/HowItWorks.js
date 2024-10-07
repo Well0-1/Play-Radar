@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLaptopCode,
@@ -8,6 +8,9 @@ import {
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
+import Prism from "prismjs";
+import "prismjs/themes/prism-tomorrow.css";
+import "prismjs/components/prism-javascript";
 
 export default function HowItWorks() {
   const [openIndex, setOpenIndex] = useState(null);
@@ -15,6 +18,10 @@ export default function HowItWorks() {
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  useEffect(() => {
+    Prism.highlightAll();
+  }, []);
 
   const faqs = [
     {
@@ -68,9 +75,34 @@ export default function HowItWorks() {
             specific games.
           </p>
         </div>
-        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
-          <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
-            {`// Serve system information via a local endpoint
+        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-gray-800 transition duration-300 overflow-x-auto">
+          <div className="relative w-full flex flex-col">
+            <div className="relative min-h-0 flex-auto flex flex-col">
+              <div className="w-full flex-auto flex min-h-0 overflow-auto">
+                <div className="w-full relative flex-auto">
+                  <pre className="flex min-h-full text-sm leading-6 language-javascript">
+                    <div
+                      aria-hidden="true"
+                      className="hidden md:block text-slate-600 flex-none text-right select-none pr-4"
+                    >
+                      1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />
+                      10
+                      <br />
+                      11
+                      <br />
+                      12
+                      <br />
+                      13
+                      <br />
+                      14
+                      <br />
+                      15
+                      <br />
+                      16
+                      <br />
+                    </div>
+                    <code className="flex-auto relative block text-slate-50 pt-4 pb-4 px-4 overflow-auto">
+                      {`// Serve system information via a local endpoint
 // Which can only be accessed from your local network
 
 expressApp.get("/system-info", async (req, res) => {
@@ -86,7 +118,12 @@ const server = expressApp.listen(50000, () => {
 });
 
 // Data is saved to local storage to avoid repeated application runs`}
-          </pre>
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -102,14 +139,32 @@ const server = expressApp.listen(50000, () => {
             various games.
           </p>
         </div>
-        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
-          <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
-            {`// We store the CPU model, and other details here for later use 
+        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-gray-800 transition duration-300 overflow-x-auto text-start font-mono">
+          <div className="relative w-full flex flex-col">
+            <div className="relative min-h-0 flex-auto flex flex-col">
+              <div className="w-full flex-auto flex min-h-0 overflow-auto">
+                <div className="w-full relative flex-auto">
+                  <pre className="flex min-h-full text-sm leading-6 language-javascript">
+                    <div
+                      aria-hidden="true"
+                      className="hidden md:block text-slate-600 flex-none text-right select-none pr-4"
+                    >
+                      1<br />2<br />3<br />4<br />5<br />6<br />7
+                    </div>
+                    <code className="flex-auto relative block text-slate-50 pt-4 pb-4 px-4 overflow-auto">
+                      {`// We store the CPU model, and other details here for later use 
+
 const [cpuModel, setCpuModel] = useState(""); // Cpu model name
 const [gpuModel, setGpuModel] = useState(""); // GPU model name
 const userCpuScore = getBenchmarkScore(cpuModel, cpuData);
+
 ...`}
-          </pre>
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -124,14 +179,39 @@ const userCpuScore = getBenchmarkScore(cpuModel, cpuData);
             We use secure servers to manage and process the information your system provides.
           </p>
         </div>
-        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-slate-800 transition duration-300 overflow-x-auto text-start font-mono">
-          <pre className="text-gray-400 whitespace-pre-wrap text-start max-lg:text-sm">
-            {`// API endpoint to receive system information
-app.post("/system-info", (req, res) => {
-  const sysInfo = req.body; // Gathers the information sent by the user
-  res.status(200).json({ message: "System info received successfully" });
+        <div className="lg:w-2/3 w-11/12 bg-gray-900 p-4 rounded-lg hover:bg-gray-800 transition duration-300 overflow-x-auto text-start font-mono">
+          <div className="relative w-full flex flex-col">
+            <div className="relative min-h-0 flex-auto flex flex-col">
+              <div className="w-full flex-auto flex min-h-0 overflow-auto">
+                <div className="w-full relative flex-auto">
+                  <pre className="flex min-h-full text-sm leading-6 language-javascript">
+                    <div
+                      aria-hidden="true"
+                      className="hidden md:block text-slate-600 flex-none text-right select-none pr-4"
+                    >
+                      1<br />2<br />3<br />4<br />5<br />6<br />7<br />8<br />9<br />
+                      10
+                      <br />
+                      11
+                    </div>
+                    <code className="flex-auto relative block text-slate-50 pt-4 pb-4 px-4 overflow-auto">
+                      {`// API endpoint to receive system information
+                      
+app.post("/api/system-info", (req, res) => {
+  const sysInfo = req.body;
+
+  if (!sysInfo.cpu || !sysInfo.gpu || !sysInfo.ram || !sysInfo.os || !sysInfo.bit) {
+    return res.status(400).json({ error: "Invalid system information" });
+  }
+
+  res.status(200).json({ message: "System info received successfully " });
 });`}
-          </pre>
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
