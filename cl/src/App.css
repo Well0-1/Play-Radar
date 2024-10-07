@@ -9,3 +9,50 @@ input::-webkit-inner-spin-button {
 input {
   -moz-appearance: textfield;
 }
+
+pre[class*="language-"],
+code[class*="language-"] {
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  font-family: "JetBrains Mono", monospace !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  color: #fff !important;
+
+  .token.keyword {
+    color: #fa7970;
+    font-weight: 600;
+  }
+
+  .token.function {
+    color: #cea5fb;
+    font-weight: 600;
+  }
+
+  .token.string {
+    color: #a2d2fb;
+  }
+
+  .token.number {
+    color: #a2d2fb;
+  }
+
+  .token.comment {
+    color: #7d8590;
+    font-style: italic;
+  }
+
+  .token.operator {
+    color: #fa7970; /* Github operator rengi */
+  }
+
+  .token.punctuation {
+    color: #fff;
+  }
+
+  .token.property {
+    color: #fff;
+  }
+}
