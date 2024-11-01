@@ -24,7 +24,13 @@ export const validateSystem = (cpu, gpu, ram, os, bit, minCpu, minGpu, minRam, m
     return ["You need to provide complete data entry."];
   }
 
-  const isValidOS = os.includes("Linux") || (OS_VERSIONS[os] && OS_VERSIONS[minOs]);
+  const lowerOs =
+    OS_VERSIONS[Object.keys(OS_VERSIONS).find((key) => key.toLowerCase() === os.toLowerCase())];
+
+  const minLowerOs =
+    OS_VERSIONS[Object.keys(OS_VERSIONS).find((key) => key.toLowerCase() === minOs.toLowerCase())]; // Too busy to make a real solution
+
+  const isValidOS = os.toLowerCase().includes("linux") || (lowerOs && minLowerOs);
 
   if (!isValidOS) {
     return ["Invalid operating system version provided."];
