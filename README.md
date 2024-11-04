@@ -17,7 +17,7 @@ Play Radar is designed to help gamers and gaming enthusiasts to get insights int
 ## Technologies Used
 
 - **Frontend**: React.js
-- **Backend**: Node.js, Express
+- **Backend**: Node.js, Express.js
 - **Database**: MongoDB
 - **Authentication**: JWT (JSON Web Token)
 - **Styling**: Tailwind CSS
@@ -42,12 +42,6 @@ Follow these steps to install and run the project locally:
 
    ```bash
    npm install
-   ```
-
-   Or if using Yarn:
-
-   ```bash
-   yarn install
    ```
 
 4. **Configure the environment variables**:
